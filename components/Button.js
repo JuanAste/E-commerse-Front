@@ -7,11 +7,19 @@ export const ButtonStyle = css`
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  text-decoration:none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
   svg {
     height: 16px;
     margin-right: 5px;
   }
+  ${(props) =>
+    props.block &&
+    css`
+      display: block;
+      width: 100%;
+    `}
   ${(props) =>
     props.white &&
     !props.outline &&
@@ -27,12 +35,36 @@ export const ButtonStyle = css`
       color: #fff;
       border: 1px solid #fff;
     `}
+    ${(props) =>
+    props.black &&
+    !props.outline &&
+    css`
+      background-color: #000;
+      color: #fff;
+    `}
+  ${(props) =>
+    props.black &&
+    props.outline &&
+    css`
+      background-color: transparent;
+      color: #000;
+      border: 1px solid #000;
+    `}
   ${(props) =>
     props.primary &&
+    !props.outline &&
     css`
-      background-color: #5542f6;
-      border: 1px solid #5542f6;
+      background-color: #0d3d29;
+      border: 1px solid #0d3d29;
       color: #fff;
+    `}
+    ${(props) =>
+    props.primary &&
+    props.outline &&
+    css`
+      background-color: transparent;
+      border: 1px solid #0d3d29;
+      color: #0d3d29;
     `}
   ${(props) =>
     props.size === "l" &&
