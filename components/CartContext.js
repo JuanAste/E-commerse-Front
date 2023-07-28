@@ -34,9 +34,20 @@ export function CartContextProvider({ children }) {
     }
   }
 
+  function clearCart() {
+    setCartProducts([]);
+    localStorage.setItem("cart", JSON.stringify([]));
+  }
+
   return (
     <CartContext.Provider
-      value={{ cartProducts, setCartProducts, addProduct, removeProduct }}
+      value={{
+        cartProducts,
+        setCartProducts,
+        addProduct,
+        removeProduct,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
