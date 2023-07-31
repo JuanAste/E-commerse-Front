@@ -4,21 +4,19 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Input from "@/components/Input";
 import Table from "@/components/Table";
+import WhiteBox from "@/components/WhiteBox";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ColumnsWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 0.7fr;
+  grid-template-columns: 1fr;
   gap: 40px;
   margin-top: 40px;
-`;
-
-const Box = styled.div`
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 30px;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.2fr 0.7fr;
+  }
 `;
 
 const ProductInfoCell = styled.td`
@@ -26,22 +24,36 @@ const ProductInfoCell = styled.td`
 `;
 
 const ProductImageBox = styled.div`
-  width: 100px;
-  height: 100px;
-  padding: 10px;
+  width: 70px;
+  height: 70px;
+  padding: 2px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   img {
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 60px;
+    max-height: 60px;
+  }
+  @media screen and (min-width: 768px) {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    img {
+      max-width: 80px;
+      max-height: 80px;
+    }
   }
 `;
 
 const QuantitySpan = styled.span`
-  padding: 0 3px;
+  padding: 0 15px;
+  display: block;
+  @media screen and (min-width: 768px) {
+    display: inline-block;
+    padding: 0 10px;
+  }
 `;
 
 const CityHolder = styled.div`
@@ -123,10 +135,10 @@ export default function CartPage() {
         <Header />
         <Center>
           <ColumnsWrapper>
-            <Box>
+            <WhiteBox>
               <h1>Thanks for your order!</h1>
               <p>We will email you when your order will be sent.</p>
-            </Box>
+            </WhiteBox>
           </ColumnsWrapper>
         </Center>
       </>
@@ -138,7 +150,7 @@ export default function CartPage() {
       <Header />
       <Center>
         <ColumnsWrapper>
-          <Box>
+          <WhiteBox>
             <h2>Cart</h2>
             {!cartProducts?.length && <div>Your cart is empty</div>}
             {!!products?.length && (
@@ -188,9 +200,9 @@ export default function CartPage() {
                 </tbody>
               </Table>
             )}
-          </Box>
+          </WhiteBox>
           {!!cartProducts?.length && (
-            <Box>
+            <WhiteBox>
               <h2>Order information</h2>
               <Input
                 type="text"
@@ -239,7 +251,7 @@ export default function CartPage() {
               <Button onClick={goToPayment} black={1} block={1}>
                 Continue to payment
               </Button>
-            </Box>
+            </WhiteBox>
           )}
         </ColumnsWrapper>
       </Center>
