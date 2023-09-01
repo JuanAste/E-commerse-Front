@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Center from "./Center";
-import ProductsGrid from "./ProducstGrid";
+import ProductsGrid from "./productsPage/ProducstGrid";
 
 const Title = styled.h2`
   font-size: 2rem;

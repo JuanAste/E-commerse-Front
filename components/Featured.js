@@ -9,7 +9,7 @@ import { CartContext } from "./CartContext";
 const Bg = styled.div`
   background-color: #222;
   color: #fff;
-  padding: 50px 0;
+  padding: 30px 0;
 `;
 
 const Title = styled.h1`
@@ -60,6 +60,10 @@ const ButtonsWrapper = styled.div`
   margin-top: 25px;
 `;
 
+const BigImage = styled.img`
+  border-radius:10px;
+`;
+
 export default function Featured({ product }) {
   const { addProduct } = useContext(CartContext);
 
@@ -91,7 +95,7 @@ export default function Featured({ product }) {
             </div>
           </Column>
           <Column>
-            <img src={product.images[0]} alt="" />
+            <BigImage src={product.images[0]} alt="" />
           </Column>
         </ColumnsWrapper>
       </Center>

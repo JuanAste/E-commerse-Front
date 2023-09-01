@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "../Button";
 import Link from "next/link";
 import { useContext } from "react";
-import { CartContext } from "./CartContext";
+import { CartContext } from "../CartContext";
 
 const ProductWrapper = styled.div``;
 

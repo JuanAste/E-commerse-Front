@@ -67,6 +67,12 @@ const Total = styled.td`
   font-weight: 500;
 `;
 
+const ErrorP = styled.p`
+  margin-top: 10px;
+  color: red;
+  font-size: 0.8rem;
+`;
+
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
@@ -78,12 +84,18 @@ export default function CartPage() {
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorCheckout, setErrorCheckout] = useState("");
 
   useEffect(() => {
     if (cartProducts.length) {
-      axios.post("/api/cart", { ids: cartProducts }).then((result) => {
-        setProducts(result.data);
-      });
+      axios
+        .post("/api/cart", { ids: cartProducts })
+        .then((result) => {
+          setProducts(result.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       setProducts([]);
     }
@@ -108,17 +120,22 @@ export default function CartPage() {
   }
 
   async function goToPayment() {
-    const response = await axios.post("/api/checkout", {
-      name,
-      email,
-      city,
-      postalCode,
-      streetAddress,
-      country,
-      cartProducts,
-    });
-    if (response.data.url) {
-      window.location = response.data.url;
+    try {
+      const response = await axios.post("/api/checkout", {
+        name,
+        email,
+        city,
+        postalCode,
+        streetAddress,
+        country,
+        cartProducts,
+      });
+      if (response.data.url) {
+        window.location = response.data.url;
+      }
+    } catch (error) {
+      setErrorCheckout(error.response.data);
+      console.log(error.response.data);
     }
   }
 
@@ -251,6 +268,7 @@ export default function CartPage() {
               <Button onClick={goToPayment} black={1} block={1}>
                 Continue to payment
               </Button>
+              {!!errorCheckout && <ErrorP>{errorCheckout}</ErrorP>}
             </WhiteBox>
           )}
         </ColumnsWrapper>

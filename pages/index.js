@@ -15,17 +15,20 @@ export default function Home({ featureProduct, newProducts }) {
 }
 
 export async function getServerSideProps() {
-  const featureProductId = "64bff097f713bcaebdee5ef7";
   await mongooseConnect();
-  const featureProduct = await Product.findById(featureProductId);
+  const featureProduct = await Product.findOne().sort({ sells: -1 }).exec();
   const newProducts = await Product.find({}, null, {
     sort: { _id: -1 },
-    limit: 10,
+    limit: 12,
   });
-  return {
-    props: {
-      featureProduct: JSON.parse(JSON.stringify(featureProduct)),
-      newProducts: JSON.parse(JSON.stringify(newProducts)),
-    },
-  };
+  if (!featureProduct) {
+    console.log("No products were found in the database.");
+  } else {
+    return {
+      props: {
+        featureProduct: JSON.parse(JSON.stringify(featureProduct)),
+        newProducts: JSON.parse(JSON.stringify(newProducts)),
+      },
+    };
+  }
 }

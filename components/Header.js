@@ -82,8 +82,6 @@ export default function Header() {
   const [mobileNavActive, setMobileNavActive] = useState(false);
   const { data: session } = useSession();
 
-  console.log(session);
-
   return (
     <StyleHeader>
       <Center>
@@ -91,7 +89,7 @@ export default function Header() {
           <Logo href={"/"}>Ecommerce</Logo>
           <StyledNav mobileNavActive={mobileNavActive}>
             <NavLink href={"/"}>Home</NavLink>
-            <NavLink href={"/products"}>All products</NavLink>
+            <NavLink href={"/products?page=1"}>All products</NavLink>
             <NavLink href={"/categories"}>Categories</NavLink>
             {!session ? (
               <NavButton onClick={() => signIn("google")}>Account</NavButton>

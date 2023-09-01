@@ -1,26 +1,60 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import ProductsGrid from "@/components/ProducstGrid";
+import Paginate from "@/components/productsPage/Paginate";
+import ProductsGrid from "@/components/productsPage/ProducstGrid";
+import SearchProducts from "@/components/productsPage/SearchProducts";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
 
-
-export default function ProductsPage({products}) {
+export default function ProductsPage({ products }) {
   return (
     <>
       <Header />
       <Center>
         <Title>All products</Title>
+        <SearchProducts />
         <ProductsGrid products={products} />
+        <Paginate products={products} />
       </Center>
     </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
+  const { page = 1, search, order } = query;
   await mongooseConnect();
-  const products = await Product.find({},null, { sort: { _id: -1 } });
+
+  //page
+  const itemsPerPage = 12;
+  const skipCount = (page - 1) * itemsPerPage;
+
+  //order
+  const mapOrderValue = (selectedValue) => {
+    switch (selectedValue) {
+      case "newProducts":
+        return { createdAt: -1 };
+      case "oldProducts":
+        return { createdAt: 1 };
+      case "priceUp":
+        return { price: 1 };
+      case "priceDown":
+        return { price: -1 };
+      default:
+        return { _id: -1 };
+    }
+  };
+
+  const orderOptions = mapOrderValue(order);
+  const products = await Product.find(
+    { title: { $regex: new RegExp(search, "i") } },
+    null,
+    {
+      sort: orderOptions,
+    }
+  )
+    .skip(skipCount)
+    .limit(itemsPerPage);
 
   return {
     props: {
