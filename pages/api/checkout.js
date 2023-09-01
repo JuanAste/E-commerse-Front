@@ -29,12 +29,16 @@ export default async function handle(req, res) {
       (p) => p._id.toString() === productId
     );
     const quantity = productsIds.filter((id) => id === productId)?.length || 0;
+    console.log(productInfo);
     if (quantity > 0 && productInfo) {
       line_items.push({
         quantity,
         price_data: {
           currency: "USD",
-          product_data: { name: productInfo.title },
+          product_data: {
+            name: productInfo.title,
+            images: [productInfo.images[0]],
+          },
           unit_amount: quantity * productInfo.price * 100,
         },
       });
@@ -67,3 +71,5 @@ export default async function handle(req, res) {
     url: session.url,
   });
 }
+
+// classy-trusty-eases-beckon
