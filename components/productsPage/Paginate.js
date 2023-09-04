@@ -5,6 +5,7 @@ import styled from "styled-components";
 const Content = styled.div`
   display: flex;
   justify-content: space-evenly;
+  align-items:center;
   margin-top: 40px;
 `;
 
@@ -12,12 +13,12 @@ const PageLink = styled(Link)`
   color: #222;
   border: 1px solid #222;
   border-radius: 5px;
-  padding: 8px;
   text-decoration: none;
   display: flex;
   min-width: 120px;
   align-items: center;
   justify-content: center;
+  padding:4px;
   &:hover {
     background-color: #222;
     color: white;
@@ -28,12 +29,12 @@ const PageButton = styled.button`
   color: #222;
   border: 1px solid #222;
   border-radius: 5px;
-  padding: 8px;
   text-decoration: none;
   display: flex;
   min-width: 120px;
   align-items: center;
   justify-content: center;
+  padding:4px;
   font-size: 1rem;
   &:hover {
     background-color: #222;

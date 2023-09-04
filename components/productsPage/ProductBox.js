@@ -73,6 +73,7 @@ export default function ProductBox({ _id, title, description, price, images }) {
             block={1}
             primary={1}
             outline={1}
+            hover={1}
             onClick={() => addProduct(_id)}
           >
             Add to cart

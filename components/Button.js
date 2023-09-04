@@ -75,6 +75,15 @@ export const ButtonStyle = css`
         height: 20px;
       }
     `}
+    ${(props) =>
+    props.hover && props.primary &&
+    css`
+      &:hover {
+        background-color: #0d3d29;
+        border: 1px solid #0d3d29;
+        color: #fff;
+      }
+    `}
 `;
 
 const StyledButton = styled.button`
