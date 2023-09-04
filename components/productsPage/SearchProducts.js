@@ -9,21 +9,38 @@ const Content = styled.div`
   align-items: center;
   padding: 20px;
   margin-bottom: 20px;
+  @media screen and (max-width: 768px) {
+    flex-direction:column;
+  }
 `;
 
 const ContentOrder = styled.div`
   margin-left: 200px;
   margin-bottom:20px;
+  @media screen and (max-width: 768px) {
+    margin-left: 0px;
+    margin-top:30px;
+    margin-bottom:5px;
+    display:flex;
+    flex-direction:column;
+  }
 `;
 
 const ContentSearch = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
+  @media screen and (max-width: 768px) {
+    gap: 5px;
+  }
 `;
 const InputSearch = styled.input`
   width: 300px;
   height: 30px;
+  @media screen and (max-width: 768px) {
+    width: 200px;
+    margin-left:20px;
+  }
 `;
 const SearchButton = styled(Link)`
   color: #222;
