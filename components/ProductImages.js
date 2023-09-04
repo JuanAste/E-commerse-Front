@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import imageErr404 from "../Images/error 404.png";
 
 const Image = styled.img`
   max-width: 100%;
@@ -47,15 +48,19 @@ export default function ProductImages({ images }) {
         <BigImage src={activeImage} alt="" />
       </BigImageWrapper>
       <ImageButtons>
-        {images?.map((image) => (
-          <ImageButton
-            active={image === activeImage}
-            key={image}
-            onClick={() => setActiveImage(image)}
-          >
-            <Image src={image} alt="" />
-          </ImageButton>
-        ))}
+        {images.length ? (
+          images?.map((image) => (
+            <ImageButton
+              active={image === activeImage}
+              key={image}
+              onClick={() => setActiveImage(image)}
+            >
+              <Image src={image || imageErr404.src} alt="" />
+            </ImageButton>
+          ))
+        ) : (
+          <Image src={imageErr404.src} alt="" />
+        )}
       </ImageButtons>
     </>
   );

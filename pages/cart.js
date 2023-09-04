@@ -8,6 +8,7 @@ import WhiteBox from "@/components/WhiteBox";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import imageErr404 from "../Images/error 404.png";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -184,7 +185,11 @@ export default function CartPage() {
                     <tr key={product._Id}>
                       <ProductInfoCell>
                         <ProductImageBox>
-                          <img src={product.images[0]} alt="" />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={product.images[0] || imageErr404.src}
+                            alt=""
+                          />
                         </ProductImageBox>
                         {product.title}
                       </ProductInfoCell>

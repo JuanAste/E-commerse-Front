@@ -103,10 +103,14 @@ export default function SearchProducts() {
           value={orderProd}
           onChange={(ev) => setOrderProd(ev.target.value)}
         >
+          <optgroup label="Products">
           <option value={"newProducts"}>New products</option>
           <option value={"oldProducts"}>Old products</option>
+          </optgroup>
+          <optgroup label="Price">
           <option value={"priceUp"}>Price up</option>
           <option value={"priceDown"}>Price down</option>
+          </optgroup>
         </SelectOrder>
       </ContentOrder>
     </Content>
