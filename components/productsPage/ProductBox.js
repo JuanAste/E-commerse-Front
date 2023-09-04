@@ -3,6 +3,7 @@ import Button from "../Button";
 import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "../CartContext";
+import imageErr404 from "../../Images/error 404.png";
 
 const ProductWrapper = styled.div``;
 
@@ -39,7 +40,7 @@ const PriceRow = styled.div`
   margin-top: 2px;
   @media screen and (min-width: 768px) {
     display: flex;
-    gap:5px;
+    gap: 5px;
   }
 `;
 
@@ -61,14 +62,19 @@ export default function ProductBox({ _id, title, description, price, images }) {
     <ProductWrapper>
       <WhiteBox href={url}>
         <div>
-          <img src={images[0]} alt="" />
+          <img src={images[0] || imageErr404.src} alt="" />
         </div>
       </WhiteBox>
       <ProductInfoBox>
         <Title href={url}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Button block={1} primary={1} outline={1} onClick={() => addProduct(_id)}>
+          <Button
+            block={1}
+            primary={1}
+            outline={1}
+            onClick={() => addProduct(_id)}
+          >
             Add to cart
           </Button>
         </PriceRow>

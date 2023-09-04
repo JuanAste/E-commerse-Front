@@ -1,32 +1,80 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+
+const Content = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
+`;
+
+const PageLink = styled(Link)`
+  color: #222;
+  border: 1px solid #222;
+  border-radius: 5px;
+  padding: 8px;
+  text-decoration: none;
+  display: flex;
+  min-width: 120px;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: #222;
+    color: white;
+  }
+`;
+
+const PageButton = styled.button`
+  color: #222;
+  border: 1px solid #222;
+  border-radius: 5px;
+  padding: 8px;
+  text-decoration: none;
+  display: flex;
+  min-width: 120px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  &:hover {
+    background-color: #222;
+    color: white;
+  }
+`;
+
+const PageNum = styled.p`
+  font-size: 1.2rem;
+`;
 
 export default function Paginate({ products }) {
   const router = useRouter();
   const { page = 1, search } = router.query;
   return (
-    <div>
-      <p>Page {page}</p>
-
-      {page > 1 && (
-        <Link
+    <Content>
+      {page > 1 ? (
+        <PageLink
           href={`/products?page=${page - 1}${
             search ? `&search=${search}` : ""
           }`}
         >
           Previous Page
-        </Link>
+        </PageLink>
+      ) : (
+        <PageButton>Previous Page</PageButton>
       )}
 
-      {products.length === 12 && (
-        <Link
+      <PageNum>{page}</PageNum>
+
+      {products.length >= 12 ? (
+        <PageLink
           href={`/products?page=${parseInt(page) + 1}${
             search ? `&search=${search}` : ""
           }`}
         >
           Next Page
-        </Link>
+        </PageLink>
+      ) : (
+        <PageButton>Next Page</PageButton>
       )}
-    </div>
+    </Content>
   );
 }
