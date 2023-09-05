@@ -45,7 +45,7 @@ export default async function handle(req, res) {
 
       if (quantity > 0) {
         if (productInfo.stock < quantity) {
-          res.status(400).json("Product out of stock");
+          res.status(400).json(`${productInfo.title} out of stock`);
           return;
         }
 
@@ -59,6 +59,7 @@ export default async function handle(req, res) {
             },
             unit_amount: quantity * productInfo.price * 100,
           },
+          product_id: productInfo._id,
         });
 
         await Product.updateOne(

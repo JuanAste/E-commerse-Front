@@ -1,12 +1,14 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import { signOut, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import imageErr404 from "../Images/error 404.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "@/components/Button";
+import { mongooseConnect } from "@/lib/mongoose";
+import { Order } from "@/models/Order";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -71,7 +73,7 @@ const ButtonsForm = styled.div`
   grid-auto-flow: column;
 `;
 
-export default function Account() {
+export default function Account({ newOrders }) {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -87,6 +89,8 @@ export default function Account() {
     streetAddress: "",
     postalCode: "",
   });
+
+  console.log(newOrders);
 
   useEffect(() => {
     if (session) {
@@ -119,6 +123,17 @@ export default function Account() {
   async function UpdateUser() {
     await axios.put("/api/user", userData);
     setEdit(false);
+  }
+
+  function renderOrderItems(order) {
+    return (
+      <div key={order?.product_id}>
+        <img src={order?.price_data?.product_data?.images[0]} alt="" />
+        <h2>{order?.product_id}</h2>
+        <h2>{order?.price_data?.product_data?.name}</h2>
+        <h2>$ {order?.price_data?.unit_amount / 100}</h2>
+      </div>
+    );
   }
 
   return (
@@ -191,13 +206,13 @@ export default function Account() {
                 <h4>{user.name}</h4>
                 <h3>Email:</h3>
                 <h4>{user.email}</h4>
-                <h3>country:</h3>
+                <h3>Country:</h3>
                 <h4>{user.country}</h4>
-                <h3>city:</h3>
+                <h3>City:</h3>
                 <h4>{user.city}</h4>
                 <h3>Street address:</h3>
                 <h4>{user.streetAddress}</h4>
-                <h3>postalCode:</h3>
+                <h3>Postal code:</h3>
                 <h4>{user.postalCode}</h4>
                 <ContentButton>
                   <Button onClick={() => setEdit(true)}>Edit</Button>
@@ -206,11 +221,44 @@ export default function Account() {
               </StyleUserInfo>
             )}
             <div>
-              <h2>Ultimas compras</h2>
+              <h2>Últimas compras</h2>
+              {newOrders[0].line_items.slice(0, 2).map((order, index) => (
+                <div key={index}>
+                  <img
+                    src={order?.price_data?.product_data?.images[0]}
+                    alt=""
+                  />
+                  <h2>{order?.product_id}</h2>
+                  <h2>{order?.price_data?.product_data?.name}</h2>
+                  <h2>$ {order?.price_data?.unit_amount / 100}</h2>
+                </div>
+              ))}
             </div>
           </ColumnsWrapper>
         )}
       </Center>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  await mongooseConnect();
+  const record = session?.user?.record;
+  const newOrders = await Order.find({
+    _id: { $in: record },
+    "line_items.product_id": { $exists: true },
+  })
+    .select("line_items")
+    .sort({ _id: -1 })
+    .limit(1);
+  if (!newOrders) {
+    console.log("No orders were found in the database.");
+  } else {
+    return {
+      props: {
+        newOrders: JSON.parse(JSON.stringify(newOrders)),
+      },
+    };
+  }
 }

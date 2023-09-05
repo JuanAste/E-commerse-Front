@@ -79,17 +79,37 @@ export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
   const { data: session } = useSession();
-  console.log(session);
-  const user = session?.user;
+
+  const [user, setUser] = useState(session?.user);
+  const [userData, setUserData] = useState({
+    _id: "",
+    name: "",
+    email: "",
+    country: "",
+    city: "",
+    streetAddress: "",
+    postalCode: "",
+    cartProducts,
+  });
   const [products, setProducts] = useState([]);
-  const [name, setName] = useState(user.name || "");
-  const [email, setEmail] = useState(user.email || "");
-  const [city, setCity] = useState(user.city || "");
-  const [postalCode, setPostalCode] = useState(user.postalCode || "");
-  const [streetAddress, setStreetAddress] = useState(user.streetAddress || "");
-  const [country, setCountry] = useState(user.country || "");
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorCheckout, setErrorCheckout] = useState("");
+
+  useEffect(() => {
+    if (session) {
+      setUser(session.user);
+      setUserData({
+        _id: session.user?.id || "",
+        name: session.user?.name || "",
+        email: session.user?.email || "",
+        country: session.user?.country || "",
+        city: session.user?.city || "",
+        streetAddress: session.user?.streetAddress || "",
+        postalCode: session.user?.postalCode || "",
+        cartProducts,
+      });
+    }
+  }, [session]);
 
   useEffect(() => {
     if (cartProducts.length) {
@@ -126,18 +146,25 @@ export default function CartPage() {
 
   async function goToPayment() {
     try {
-      const response = await axios.post("/api/checkout", {
-        _id: user.id,
-        name,
-        email,
-        city,
-        postalCode,
-        streetAddress,
-        country,
-        cartProducts,
-      });
-      if (response.data.url) {
-        window.location = response.data.url;
+      if (!user) {
+        setErrorCheckout("You must log in to buy");
+      } else if (
+        !userData.name ||
+        !userData.email ||
+        !userData.city ||
+        !userData.postalCode ||
+        !userData.streetAddress ||
+        !userData.country ||
+        !cartProducts
+      ) {
+        setErrorCheckout(
+          "Fill in the parameters so we can send you your product"
+        );
+      } else {
+        const response = await axios.post("/api/checkout", userData);
+        if (response.data.url) {
+          window.location = response.data.url;
+        }
       }
     } catch (error) {
       setErrorCheckout(error.response.data);
@@ -150,6 +177,14 @@ export default function CartPage() {
   for (const productId of cartProducts) {
     const price = products.find((p) => p._id === productId)?.price || 0;
     total += price;
+  }
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));
   }
 
   if (isSuccess) {
@@ -234,46 +269,46 @@ export default function CartPage() {
               <Input
                 type="text"
                 placeholder="Name"
-                value={name}
-                name={name}
-                onChange={(ev) => setName(ev.target.value)}
+                value={userData.name}
+                name={"name"}
+                onChange={handleInputChange}
               />
               <Input
                 type="text"
                 placeholder="Email"
-                value={email}
-                name={email}
-                onChange={(ev) => setEmail(ev.target.value)}
+                value={userData.email}
+                name={"email"}
+                onChange={handleInputChange}
               />
               <CityHolder>
                 <Input
                   type="text"
                   placeholder="City"
-                  value={city}
-                  name={city}
-                  onChange={(ev) => setCity(ev.target.value)}
+                  value={userData.city}
+                  name={"city"}
+                  onChange={handleInputChange}
                 />
                 <Input
                   type="text"
                   placeholder="Postal code"
-                  value={postalCode}
-                  name={postalCode}
-                  onChange={(ev) => setPostalCode(ev.target.value)}
+                  value={userData.postalCode}
+                  name={"postalCode"}
+                  onChange={handleInputChange}
                 />
               </CityHolder>
               <Input
                 type="text"
                 placeholder="Street address"
-                value={streetAddress}
-                name={streetAddress}
-                onChange={(ev) => setStreetAddress(ev.target.value)}
+                value={userData.streetAddress}
+                name={"streetAddress"}
+                onChange={handleInputChange}
               />
               <Input
                 type="text"
                 placeholder="Country"
-                value={country}
-                name={country}
-                onChange={(ev) => setCountry(ev.target.value)}
+                value={userData.country}
+                name={"country"}
+                onChange={handleInputChange}
               />
               <Button onClick={goToPayment} black={1} block={1}>
                 Continue to payment
