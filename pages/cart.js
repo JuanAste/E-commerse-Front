@@ -9,6 +9,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import imageErr404 from "../Images/error 404.png";
+import { useSession } from "next-auth/react";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -77,13 +78,16 @@ const ErrorP = styled.p`
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
+  const { data: session } = useSession();
+  console.log(session);
+  const user = session?.user;
   const [products, setProducts] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [country, setCountry] = useState("");
+  const [name, setName] = useState(user.name || "");
+  const [email, setEmail] = useState(user.email || "");
+  const [city, setCity] = useState(user.city || "");
+  const [postalCode, setPostalCode] = useState(user.postalCode || "");
+  const [streetAddress, setStreetAddress] = useState(user.streetAddress || "");
+  const [country, setCountry] = useState(user.country || "");
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorCheckout, setErrorCheckout] = useState("");
 
@@ -123,6 +127,7 @@ export default function CartPage() {
   async function goToPayment() {
     try {
       const response = await axios.post("/api/checkout", {
+        _id: user.id,
         name,
         email,
         city,

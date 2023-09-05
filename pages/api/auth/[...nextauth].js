@@ -21,4 +21,11 @@ export default NextAuth({
     // Passwordless / email sign in
   ],
   adapter: MongoDBAdapter(clientPromise),
+  callbacks: {
+    async session({ session, token, user }) {
+      // console.log(session, token, user);
+      return {session, user};
+      // return session;
+    },
+  },
 });

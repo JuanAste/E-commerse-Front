@@ -1,6 +1,7 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
 import { Product } from "@/models/Product";
+import { User } from "@/models/User";
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 export default async function handle(req, res) {
@@ -11,6 +12,7 @@ export default async function handle(req, res) {
     }
 
     const {
+      _id,
       name,
       email,
       city,
@@ -93,6 +95,10 @@ export default async function handle(req, res) {
       },
     });
 
+    if (session) {
+      await User.updateOne({ _id }, { $push: { record: orderDoc._id } });
+    }
+
     res.json({
       url: session.url,
     });
@@ -100,4 +106,3 @@ export default async function handle(req, res) {
     res.send(error.message);
   }
 }
-

@@ -76,12 +76,21 @@ export const ButtonStyle = css`
       }
     `}
     ${(props) =>
-    props.hover && props.primary &&
+    props.hoverPrimary &&
     css`
       &:hover {
         background-color: #0d3d29;
         border: 1px solid #0d3d29;
         color: #fff;
+      }
+    `}
+    ${(props) =>
+    props.hoverOutline &&
+    css`
+      &:hover {
+        background-color: transparent;
+        border: 1px solid #0d3d29;
+        color: #0d3d29;
       }
     `}
 `;

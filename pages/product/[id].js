@@ -46,7 +46,11 @@ export default function ProductPage({ product }) {
                 <Title>${product.price}</Title>
               </div>
               <div>
-                <Button primary={1} onClick={() => addProduct(product._id)}>
+                <Button
+                  primary={1}
+                  hoverOutline={1}
+                  onClick={() => addProduct(product._id)}
+                >
                   <CartIcon /> Add to cart
                 </Button>
               </div>

@@ -30,6 +30,10 @@ const Title = styled(Link)`
 
 const ProductInfoBox = styled.div`
   margin-top: 5px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const PriceRow = styled.div`
@@ -72,7 +76,7 @@ export default function ProductBox({ _id, title, description, price, images }) {
             block={1}
             primary={1}
             outline={1}
-            hover={1}
+            hoverPrimary={1}
             onClick={() => addProduct(_id)}
           >
             Add to cart
