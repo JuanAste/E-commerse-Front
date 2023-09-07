@@ -75,6 +75,13 @@ export const ButtonStyle = css`
         height: 20px;
       }
     `}
+        ${(props) =>
+        props.red &&
+        css`
+          background-color: red;
+          border: 1px solid #0d3d29;
+          color: white;
+        `}
     ${(props) =>
     props.hoverPrimary &&
     css`
@@ -93,7 +100,24 @@ export const ButtonStyle = css`
         color: #0d3d29;
       }
     `}
-`;
+    ${(props) =>
+    props.hoverRed &&
+    css`
+      &:hover {
+        background-color: white;
+        border: 1px solid transparent;
+        color: red;
+      }
+    `}
+    ${(props) =>
+    props.hoverGreen &&
+    css`
+      &:hover {
+        background-color: #0d3d29;
+        color: #fff;
+      }
+    `}
+    `;
 
 const StyledButton = styled.button`
   ${ButtonStyle};

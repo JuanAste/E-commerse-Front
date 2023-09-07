@@ -9,6 +9,7 @@ import axios from "axios";
 import Button from "@/components/Button";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
+import Link from "next/link";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -30,12 +31,7 @@ const StyleUserInfo = styled.header`
     color: #222;
     padding: 10px;
     min-height: 15px;
-    width: 350px;
-  }
-  input {
-    padding: 10px;
-    min-height: 15px;
-    width: 350px;
+    width: 94%;
   }
 `;
 const StyleUserInfoForm = styled.form`
@@ -46,7 +42,7 @@ const StyleUserInfoForm = styled.form`
   input {
     padding: 10px;
     min-height: 15px;
-    width: 350px;
+    width: 94%;
   }
 `;
 
@@ -73,6 +69,47 @@ const ButtonsForm = styled.div`
   grid-auto-flow: column;
 `;
 
+const ContentLinkRecord = styled(Link)`
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+  padding: 20px;
+  background-color: #222;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 200px;
+  img {
+    height: 100px;
+    width: auto;
+  }
+  &:hover {
+    color: #222;
+    background-color:grey;
+  }
+`;
+
+
+const LinkRedordPage = styled(Link)`
+  width: 97%;
+  color: white;
+  text-decoration: none;
+  background-color: #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  margin-top:20px;
+  border-radius: 3px;
+  &:hover {
+    color: #222;
+    background-color:grey;
+  }
+`;
+
 export default function Account({ newOrders }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -90,7 +127,6 @@ export default function Account({ newOrders }) {
     postalCode: "",
   });
 
-  console.log(newOrders);
 
   useEffect(() => {
     if (session) {
@@ -125,16 +161,6 @@ export default function Account({ newOrders }) {
     setEdit(false);
   }
 
-  function renderOrderItems(order) {
-    return (
-      <div key={order?.product_id}>
-        <img src={order?.price_data?.product_data?.images[0]} alt="" />
-        <h2>{order?.product_id}</h2>
-        <h2>{order?.price_data?.product_data?.name}</h2>
-        <h2>$ {order?.price_data?.unit_amount / 100}</h2>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -187,14 +213,18 @@ export default function Account({ newOrders }) {
                 />
                 <ContentButton>
                   <ButtonsForm>
-                    <Button onClick={UpdateUser}>Save</Button>
-                    <Button type="button" onClick={() => setEdit(false)}>
+                    <Button hoverGreen={1} onClick={UpdateUser}>
+                      Save
+                    </Button>
+                    <Button
+                      hoverRed={1}
+                      red={1}
+                      type="button"
+                      onClick={() => setEdit(false)}
+                    >
                       Cansel
                     </Button>
                   </ButtonsForm>
-                  <Button type="button" onClick={logOut}>
-                    logout
-                  </Button>
                 </ContentButton>
               </StyleUserInfoForm>
             ) : (
@@ -215,24 +245,31 @@ export default function Account({ newOrders }) {
                 <h3>Postal code:</h3>
                 <h4>{user.postalCode}</h4>
                 <ContentButton>
-                  <Button onClick={() => setEdit(true)}>Edit</Button>
-                  <Button onClick={logOut}>logout</Button>
+                  <Button hoverPrimary={1} onClick={() => setEdit(true)}>
+                    Edit
+                  </Button>
+                  <Button hoverRed={1} red={1} onClick={logOut}>
+                    Logout
+                  </Button>
                 </ContentButton>
               </StyleUserInfo>
             )}
             <div>
-              <h2>Últimas compras</h2>
-              {newOrders[0].line_items.slice(0, 2).map((order, index) => (
-                <div key={index}>
+              <h2>Last order</h2>
+              {newOrders.line_items.slice(0, 2).map((order, index) => (
+                <ContentLinkRecord
+                  key={index}
+                  href={"/product/" + order?.product_id}
+                >
                   <img
                     src={order?.price_data?.product_data?.images[0]}
                     alt=""
                   />
-                  <h2>{order?.product_id}</h2>
                   <h2>{order?.price_data?.product_data?.name}</h2>
                   <h2>$ {order?.price_data?.unit_amount / 100}</h2>
-                </div>
+                </ContentLinkRecord>
               ))}
+              <LinkRedordPage href={"/account/record"}>Record</LinkRedordPage>
             </div>
           </ColumnsWrapper>
         )}
@@ -245,13 +282,12 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   await mongooseConnect();
   const record = session?.user?.record;
-  const newOrders = await Order.find({
+  const newOrders = await Order.findOne({
     _id: { $in: record },
     "line_items.product_id": { $exists: true },
   })
     .select("line_items")
-    .sort({ _id: -1 })
-    .limit(1);
+    .sort({ _id: -1 });
   if (!newOrders) {
     console.log("No orders were found in the database.");
   } else {
