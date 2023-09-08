@@ -6,17 +6,28 @@ import SearchProducts from "@/components/productsPage/SearchProducts";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
+import { useEffect, useState } from "react";
 
 export default function ProductsPage({ products }) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [products]);
+
   return (
     <>
-      <Header />
-      <Center>
-        <Title>All products</Title>
-        <SearchProducts />
-        <ProductsGrid products={products} />
-        <Paginate products={products} />
-      </Center>
+      {loading ? null : (
+        <div>
+          <Header />
+          <Center>
+            <Title>All products</Title>
+            <SearchProducts />
+            <ProductsGrid products={products} />
+            <Paginate products={products} />
+          </Center>
+        </div>
+      )}
     </>
   );
 }

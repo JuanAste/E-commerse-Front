@@ -82,6 +82,7 @@ export default async function handle(req, res) {
       postalCode,
       streetAddress,
       country,
+      userId: _id,
       paid: false,
     });
 
@@ -95,10 +96,6 @@ export default async function handle(req, res) {
         orderId: orderDoc._id.toString(),
       },
     });
-
-    if (session) {
-      await User.updateOne({ _id }, { $push: { record: orderDoc._id } });
-    }
 
     res.json({
       url: session.url,

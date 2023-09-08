@@ -10,7 +10,7 @@ const UserSchema = new Schema(
     postalCode: String,
     streetAddress: String,
     country: String,
-    record: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
+    // record: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
   },
   {
     timestamps: true,

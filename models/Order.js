@@ -1,4 +1,4 @@
-const { Schema, model, models } = require("mongoose");
+const { Schema, model, models, default: mongoose } = require("mongoose");
 
 const OrderSchema = new Schema(
   {
@@ -9,7 +9,12 @@ const OrderSchema = new Schema(
     postalCode: String,
     streetAddress: String,
     country: String,
+    userId: { type: mongoose.Types.ObjectId, ref: "User" },
     paid: Boolean,
+    delivered: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

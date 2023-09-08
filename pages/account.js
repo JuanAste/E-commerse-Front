@@ -1,7 +1,6 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import { getSession, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { getSession, useSession } from "next-auth/react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -21,7 +20,11 @@ const ColumnsWrapper = styled.div`
 
 export default function Account({ newOrders }) {
   const { data: session } = useSession();
-  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [newOrders]);
 
   const [userData, setUserData] = useState({
     _id: "",
@@ -50,15 +53,19 @@ export default function Account({ newOrders }) {
 
   return (
     <div>
-      <Header />
-      <Center>
-        {!!userData && (
-          <ColumnsWrapper>
-            <UserInfo userData={userData} setUserData={setUserData} />
-            <LastOrder newOrders={newOrders} />
-          </ColumnsWrapper>
-        )}
-      </Center>
+      {loading ? null : (
+        <div>
+          <Header />
+          <Center>
+            {!!userData && (
+              <ColumnsWrapper>
+                <UserInfo userData={userData} setUserData={setUserData} />
+                <LastOrder newOrders={newOrders} />
+              </ColumnsWrapper>
+            )}
+          </Center>
+        </div>
+      )}
     </div>
   );
 }
@@ -66,15 +73,15 @@ export default function Account({ newOrders }) {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   await mongooseConnect();
-  const record = session?.user?.record;
+  const userId = session?.user?.id;
   const newOrders = await Order.findOne({
-    _id: { $in: record },
-    "line_items.product_id": { $exists: true },
+    userId,
   })
     .select("line_items")
     .sort({ _id: -1 });
   if (!newOrders) {
     console.log("No orders were found in the database.");
+    return { props: {} };
   } else {
     return {
       props: {

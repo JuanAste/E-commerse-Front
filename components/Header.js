@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Center from "./Center";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./Icons/Bars";
 import { signIn, useSession } from "next-auth/react";
@@ -54,7 +54,7 @@ const NavButton = styled.button`
   position: block;
   background-color: transparent;
   padding: 10px 0;
-  font-size:17px;
+  font-size: 17px;
   border: 0;
   color: #aaa;
   cursor: pointer;
@@ -82,28 +82,36 @@ export default function Header() {
   const [mobileNavActive, setMobileNavActive] = useState(false);
   const { data: session } = useSession();
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [cartProducts]);
+
   return (
     <StyleHeader>
-      <Center>
-        <Wrapper>
-          <Logo href={"/"}>Ecommerce</Logo>
-          <StyledNav mobileNavActive={mobileNavActive}>
-            <NavLink href={"/"}>Home</NavLink>
-            <NavLink href={"/products?page=1"}>All products</NavLink>
-            <NavLink href={"/categories"}>Categories</NavLink>
-            {!session ? (
-              <NavButton onClick={() => signIn("google")}>Account</NavButton>
-            ) : (
-              <NavLink href={"/account"}>Account</NavLink>
-            )}
+      {loading ? null : (
+        <Center>
+          <Wrapper>
+            <Logo href={"/"}>Ecommerce</Logo>
+            <StyledNav mobileNavActive={mobileNavActive}>
+              <NavLink href={"/"}>Home</NavLink>
+              <NavLink href={"/products?page=1"}>All products</NavLink>
+              <NavLink href={"/categories"}>Categories</NavLink>
+              {!session ? (
+                <NavButton onClick={() => signIn("google")}>Account</NavButton>
+              ) : (
+                <NavLink href={"/account"}>Account</NavLink>
+              )}
 
-            <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
-          </StyledNav>
-          <NavButtonIcon onClick={() => setMobileNavActive((prev) => !prev)}>
-            <BarsIcon />
-          </NavButtonIcon>
-        </Wrapper>
-      </Center>
+              <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
+            </StyledNav>
+            <NavButtonIcon onClick={() => setMobileNavActive((prev) => !prev)}>
+              <BarsIcon />
+            </NavButtonIcon>
+          </Wrapper>
+        </Center>
+      )}
     </StyleHeader>
   );
 }

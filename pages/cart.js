@@ -50,12 +50,17 @@ const ProductImageBox = styled.div`
 `;
 
 const QuantitySpan = styled.span`
-  padding: 0 15px;
+  /* padding: 0 15px;
   display: block;
   @media screen and (min-width: 768px) {
     display: inline-block;
     padding: 0 10px;
-  }
+  } */
+  margin: 10px;
+  margin-right: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const CityHolder = styled.div`
