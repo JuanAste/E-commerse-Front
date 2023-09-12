@@ -1,7 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
 import { Product } from "@/models/Product";
-import { User } from "@/models/User";
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 export default async function handle(req, res) {

@@ -114,7 +114,7 @@ export default function CartPage() {
         cartProducts,
       });
     }
-  }, [session]);
+  }, [session, cartProducts]);
 
   useEffect(() => {
     if (cartProducts.length) {
@@ -200,7 +200,10 @@ export default function CartPage() {
           <ColumnsWrapper>
             <WhiteBox>
               <h1>Thanks for your order!</h1>
-              <p>We will email you when your order will be sent.</p>
+              <p>
+                Your order appears in your history when payment is completed and
+                we will send you an email when your order ships.
+              </p>
             </WhiteBox>
           </ColumnsWrapper>
         </Center>

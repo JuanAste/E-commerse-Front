@@ -76,6 +76,7 @@ export async function getServerSideProps(context) {
   const userId = session?.user?.id;
   const newOrders = await Order.findOne({
     userId,
+    paid:true,
   })
     .select("line_items")
     .sort({ _id: -1 });

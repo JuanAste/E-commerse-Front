@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import Table from "../Table";
+import styled, { css } from "styled-components";
 import imageErr404 from "../../Images/error 404.png";
 import Button from "../Button";
 import { useState } from "react";
@@ -62,6 +61,16 @@ const StyledTable = styled.table`
   tr {
     color: white;
   }
+  ${(props) =>
+    props.delivered &&
+    css`
+      background-color: #006400;
+    `}
+  ${(props) =>
+    !props.delivered &&
+    css`
+      background-color: #ab0003;
+    `}
 `;
 
 const TdStart = styled.td`
@@ -70,9 +79,15 @@ const TdStart = styled.td`
   }
 `;
 
+const ContentPaginate = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  padding:20px;
+`;
+
 export default function TableRecord({ orders }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 2; // Número de órdenes por página
+  const ordersPerPage = 5;
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -83,12 +98,14 @@ export default function TableRecord({ orders }) {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <div>
-      {currentOrders.slice().map((order) => (
+      {currentOrders.map((order) => (
         <div key={order._id}>
           <h3>
-            Order date: {new Date(order.createdAt).toLocaleDateString("es-ES")}
+            Order date: {new Date(order.createdAt).toLocaleDateString("es-ES")}{" "}
+            / {order.paid ? "Paid" : "Payment in review"} (
+            {order.delivered ? "Delivered" : "Undelivered"})
           </h3>
-          <StyledTable>
+          <StyledTable delivered={order.delivered}>
             <thead>
               <tr>
                 <th>Product</th>
@@ -133,10 +150,30 @@ export default function TableRecord({ orders }) {
       ))}
       <div>
         {orders.length > ordersPerPage && (
-          <div>
-            <Button onClick={() => paginate(currentPage - 1)}>Previous</Button>
-            <Button onClick={() => paginate(currentPage + 1)}>Next</Button>
-          </div>
+          <ContentPaginate>
+            <Button
+              disabled={currentPage <= 1}
+              onClick={() => {
+                paginate(currentPage - 1);
+                window.scrollTo(0, 0);
+              }}
+            >
+              Previous
+            </Button>
+            <span>{currentPage}</span>
+            <Button
+              disabled={
+                indexOfLastOrder >= orders.length ||
+                currentOrders.length < ordersPerPage
+              }
+              onClick={() => {
+                paginate(currentPage + 1);
+                window.scrollTo(0, 0);
+              }}
+            >
+              Next
+            </Button>
+          </ContentPaginate>
         )}
       </div>
     </div>

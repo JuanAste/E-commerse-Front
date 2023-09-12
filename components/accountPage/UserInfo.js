@@ -3,6 +3,8 @@ import Button from "../Button";
 import { useState } from "react";
 import imageErr404 from "../../Images/error 404.png";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 const StyleUserInfoForm = styled.form`
   background-color: #222;
@@ -54,6 +56,7 @@ const StyleUserInfo = styled.header`
 `;
 
 export default function UserInfo({ userData, setUserData }) {
+  const router = useRouter();
   const [edit, setEdit] = useState(false);
 
   function handleInputChange(event) {

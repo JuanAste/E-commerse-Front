@@ -27,7 +27,7 @@ export default function Home({ featureProduct, newProducts }) {
 
 export async function getServerSideProps() {
   await mongooseConnect();
-  const featureProduct = await Product.findOne().sort({ sells: -1 }).exec();
+  const featureProduct = await Product.findOne().sort({ createdAt: -1 }).exec();
   const newProducts = await Product.find({}, null, {
     sort: { createdAt: -1 },
     limit: 12,
