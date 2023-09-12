@@ -101,8 +101,7 @@ export default function TableRecord({ orders }) {
       {currentOrders.map((order) => (
         <div key={order._id}>
           <h3>
-            Order date: {new Date(order.createdAt).toLocaleDateString("es-ES")}{" "}
-            / {order.paid ? "Paid" : "Payment in review"} (
+            Order date: {new Date(order.createdAt).toLocaleDateString("es-ES")}{" "}(
             {order.delivered ? "Delivered" : "Undelivered"})
           </h3>
           <StyledTable delivered={order.delivered}>
