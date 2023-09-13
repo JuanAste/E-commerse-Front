@@ -10,19 +10,19 @@ const Content = styled.div`
   padding: 20px;
   margin-bottom: 20px;
   @media screen and (max-width: 768px) {
-    flex-direction:column;
+    flex-direction: column;
   }
 `;
 
 const ContentOrder = styled.div`
   margin-left: 200px;
-  margin-bottom:20px;
+  margin-bottom: 20px;
   @media screen and (max-width: 768px) {
     margin-left: 0px;
-    margin-top:30px;
-    margin-bottom:5px;
-    display:flex;
-    flex-direction:column;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -39,7 +39,7 @@ const InputSearch = styled.input`
   height: 30px;
   @media screen and (max-width: 768px) {
     width: 200px;
-    margin-left:20px;
+    margin-left: 20px;
   }
 `;
 const SearchButton = styled(Link)`
@@ -60,9 +60,9 @@ const SelectOrder = styled.select`
   border-radius: 5px;
 `;
 
-export default function SearchProducts() {
+export default function SearchProducts({ category }) {
   const router = useRouter();
-  const { order } = router.query;
+  const { order, id } = router.query;
 
   const [orderProd, setOrderProd] = useState(order || "");
   const [searchInp, setSearchInp] = useState("");
@@ -73,9 +73,15 @@ export default function SearchProducts() {
     }
   }, [orderProd]);
 
-  const url = `/products?page=1${searchInp ? `&search=${searchInp}` : ""}${
+  let url = `/products?page=1${searchInp ? `&search=${searchInp}` : ""}${
     orderProd ? `&order=${orderProd}` : ""
   }`;
+
+  if (category) {
+    url = `/categories/${id}?page=1${searchInp ? `&search=${searchInp}` : ""}${
+      orderProd ? `&order=${orderProd}` : ""
+    }`;
+  }
 
   const handleSearch = () => {
     router.push(url);
@@ -104,12 +110,12 @@ export default function SearchProducts() {
           onChange={(ev) => setOrderProd(ev.target.value)}
         >
           <optgroup label="Products">
-          <option value={"newProducts"}>New products</option>
-          <option value={"oldProducts"}>Old products</option>
+            <option value={"newProducts"}>New products</option>
+            <option value={"oldProducts"}>Old products</option>
           </optgroup>
           <optgroup label="Price">
-          <option value={"priceUp"}>Price up</option>
-          <option value={"priceDown"}>Price down</option>
+            <option value={"priceUp"}>Price up</option>
+            <option value={"priceDown"}>Price down</option>
           </optgroup>
         </SelectOrder>
       </ContentOrder>

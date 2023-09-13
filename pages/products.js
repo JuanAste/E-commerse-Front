@@ -2,7 +2,7 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Paginate from "@/components/productsPage/Paginate";
 import ProductsGrid from "@/components/productsPage/ProducstGrid";
-import SearchProducts from "@/components/productsPage/SearchProducts";
+import SearchProducts from "@/components/SearchProducts";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
@@ -24,7 +24,7 @@ export default function ProductsPage({ products }) {
             <Title>All products</Title>
             <SearchProducts />
             <ProductsGrid products={products} />
-            <Paginate products={products} />
+            <Paginate products={products} url={"products"} />
           </Center>
         </div>
       )}

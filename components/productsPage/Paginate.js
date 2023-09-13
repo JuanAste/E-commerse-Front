@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Content = styled.div`
   display: flex;
   justify-content: space-evenly;
-  align-items:center;
+  align-items: center;
   margin-top: 40px;
 `;
 
@@ -18,7 +18,7 @@ const PageLink = styled(Link)`
   min-width: 120px;
   align-items: center;
   justify-content: center;
-  padding:4px;
+  padding: 4px;
   &:hover {
     background-color: #222;
     color: white;
@@ -34,7 +34,7 @@ const PageButton = styled.button`
   min-width: 120px;
   align-items: center;
   justify-content: center;
-  padding:4px;
+  padding: 4px;
   font-size: 1rem;
   &:hover {
     background-color: #222;
@@ -46,17 +46,22 @@ const PageNum = styled.p`
   font-size: 1.2rem;
 `;
 
-export default function Paginate({ products }) {
+export default function Paginate({ products, url }) {
   const router = useRouter();
-  const { page = 1, search } = router.query;
+  const { page = 1 } = router.query;
+
+  let urlQuery = "";
+
+  for (const prop in router.query) {
+    if (prop !== "page" && prop !== "id" ) {
+      urlQuery += `&${prop}=${router.query[prop]}`;
+    }
+  }
+
   return (
     <Content>
       {page > 1 ? (
-        <PageLink
-          href={`/products?page=${page - 1}${
-            search ? `&search=${search}` : ""
-          }`}
-        >
+        <PageLink href={`/${url}?page=${parseInt(page) - 1}${urlQuery}`}>
           Previous Page
         </PageLink>
       ) : (
@@ -66,11 +71,7 @@ export default function Paginate({ products }) {
       <PageNum>{page}</PageNum>
 
       {products.length >= 12 ? (
-        <PageLink
-          href={`/products?page=${parseInt(page) + 1}${
-            search ? `&search=${search}` : ""
-          }`}
-        >
+        <PageLink href={`/products?page=${parseInt(page) + 1}${urlQuery}`}>
           Next Page
         </PageLink>
       ) : (
