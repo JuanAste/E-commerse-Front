@@ -62,10 +62,10 @@ const SelectOrder = styled.select`
 
 export default function SearchProducts({ category }) {
   const router = useRouter();
-  const { order, id } = router.query;
+  const { order, id, search } = router.query;
 
   const [orderProd, setOrderProd] = useState(order || "");
-  const [searchInp, setSearchInp] = useState("");
+  const [searchInp, setSearchInp] = useState(search || "");
 
   useEffect(() => {
     if (orderProd) {
@@ -81,6 +81,12 @@ export default function SearchProducts({ category }) {
     url = `/categories/${id}?page=1${searchInp ? `&search=${searchInp}` : ""}${
       orderProd ? `&order=${orderProd}` : ""
     }`;
+  }
+
+  for (const prop in router.query) {
+    if (prop !== "page" && prop !== "id" && prop !== "search" && prop !== "order" ) {
+      url += `&${prop}=${router.query[prop]}`;
+    }
   }
 
   const handleSearch = () => {

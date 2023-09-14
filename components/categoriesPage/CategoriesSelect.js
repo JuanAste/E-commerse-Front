@@ -48,7 +48,7 @@ export default function CategoriesSelect({ categories }) {
   return (
     <Container>
       {categories?.map((category, index) => (
-        <LinkContains key={index} href={`/categories/${category._id}`}>
+        <LinkContains key={index} href={`/categories/${category._id}?page=1`}>
           <CategoryContainer>
             {category.image && <CategoryImage src={category.image} />}
             <CategoryName>{category.name}</CategoryName>

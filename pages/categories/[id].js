@@ -8,36 +8,94 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import CategoryFilters from "@/components/categoriesPage/CategoryFilters";
 
-export default function CategotyPage({ categoryRelation, products, category }) {
-//   console.log(categoryRelation);
-//   console.log(products);
-
+export default function CategotyPage({ categoryRelation, products }) {
   const router = useRouter();
-  const { r, id } = router.query;
+  const { r, id, page, order, search } = router.query;
 
-  function handleChange(ev) {
-    const selectedValue = ev.target.value;
-    router.push(
-      `/categories/${id}${selectedValue !== id ? `?r=${selectedValue}` : ""}`
-    );
+  const [newR, setNewR] = useState(r || "");
+  const [properties, setProperties] = useState({});
+
+  useEffect(() => {
+    let data = "";
+
+    if (newR && newR !== id) {
+      data += `&r=${newR}`;
+    }
+    if (order) {
+      data += `&order=${order}`;
+    }
+    if (search) {
+      data += `&search=${search}`;
+    }
+    if (properties) {
+      for (const key in properties) {
+        const value = properties[key];
+        data += `&${key}=${value}`;
+      }
+    }
+
+    router.push(`/categories/${id}?page=${page ? page : 1}${data}`);
+  }, [newR, properties, id, page]);
+
+  const [categoryName, categoriesProperties] = (() => {
+    let name;
+    const properties = [];
+    for (const category of categoryRelation) {
+      if (r ? category._id === r : category._id === id) {
+        name = category;
+      }
+      if (category._id === r || category._id === id) {
+        properties.push(category);
+      }
+    }
+    return [name, properties];
+  })();
+
+  function propertiesToFillFunc(categories) {
+    let propertiesToFill = [];
+    for (const category of categories) {
+      category.properties.forEach((element) => {
+        propertiesToFill.push(element);
+      });
+    }
+    return propertiesToFill;
   }
+
+  function handleProductProp(propName, value) {
+    setProperties((prev) => {
+      const newProductProps = { ...prev };
+      if (value === "") {
+        delete newProductProps[propName];
+        return newProductProps;
+      } else {
+        newProductProps[propName] = value;
+        return newProductProps;
+      }
+    });
+  }
+
+  const propertiesToFill = propertiesToFillFunc(categoriesProperties);
 
   return (
     <div>
       <Header />
       <Center>
         <Title>
-          {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+          {categoryName.name.charAt(0).toUpperCase() +
+            categoryName.name.slice(1)}
         </Title>
         <SearchProducts category={true} />
-        <select value={r ? r : id} onChange={handleChange}>
-          {categoryRelation?.map((category, index) => (
-            <option key={index} value={category._id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+        <CategoryFilters
+          categoryRelation={categoryRelation}
+          propertiesToFill={propertiesToFill}
+          setNewR={setNewR}
+          handleProductProp={handleProductProp}
+          r={r}
+          properties={properties}
+        />
         <ProductsGrid products={products} />
 
         <Paginate products={products} url={`categories/${id}`} />
@@ -59,8 +117,6 @@ export async function getServerSideProps(context) {
       $or: [{ _id: id }, { parent: id }],
     });
 
-    const category = await Category.findById(id);
-
     for (const category of categoryRelation) {
       if (r) {
         if (category._id == r || category.parent == r) {
@@ -80,7 +136,6 @@ export async function getServerSideProps(context) {
         prop !== "page"
       ) {
         filter[`properties.${prop}`] = context.query[prop];
-        // console.log(`La clave es ${prop} y el valor es ${context.query[prop]}`);
       }
     }
 
@@ -107,10 +162,6 @@ export async function getServerSideProps(context) {
       };
     }
 
-    // console.log(filter);
-
-    // console.log(context.query);
-
     const products = await Product.find(filter)
       .sort(orderOptions)
       .skip(skipCount)
@@ -118,7 +169,6 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        category: JSON.parse(JSON.stringify(category)),
         categoryRelation: JSON.parse(JSON.stringify(categoryRelation)),
         products: JSON.parse(JSON.stringify(products)),
       },
