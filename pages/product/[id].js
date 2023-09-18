@@ -7,7 +7,9 @@ import ProductImages from "@/components/ProductImages";
 import Title from "@/components/Title";
 import WhiteBox from "@/components/WhiteBox";
 import { mongooseConnect } from "@/lib/mongoose";
+import { Order } from "@/models/Order";
 import { Product } from "@/models/Product";
+import { getSession } from "next-auth/react";
 import { useContext } from "react";
 import styled from "styled-components";
 
@@ -27,8 +29,10 @@ const PriceRow = styled.div`
   align-items: center;
 `;
 
-export default function ProductPage({ product }) {
+export default function ProductPage({ product, order }) {
   const { addProduct } = useContext(CartContext);
+
+  console.log(order);
 
   return (
     <>
@@ -64,11 +68,32 @@ export default function ProductPage({ product }) {
 
 export async function getServerSideProps(context) {
   await mongooseConnect();
+  const session = await getSession(context);
+  const userId = session?.user?.id;
   const { id } = context.query;
-  const product = await Product.findById(id);
-  return {
-    props: {
-      product: JSON.parse(JSON.stringify(product)),
-    },
-  };
+
+
+  try {
+    const order = await Order.findOne({
+      userId: userId,
+      "line_items.product_id": "64c01baae5961e9ac734cbd4",
+    });
+
+
+    const product = await Product.findById(id);
+    return {
+      props: {
+        product: JSON.parse(JSON.stringify(product)),
+        order: JSON.parse(JSON.stringify(order)),
+      },
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      props: {
+        product: null,
+        order: null,
+      },
+    };
+  }
 }

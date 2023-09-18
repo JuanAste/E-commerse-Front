@@ -31,7 +31,7 @@ const CategoryImage = styled.img`
 
 const CategoryName = styled.h1`
   position: relative;
-  top: 50%;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;

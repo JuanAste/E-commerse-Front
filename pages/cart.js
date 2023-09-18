@@ -229,8 +229,8 @@ export default function CartPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr key={product._Id}>
+                  {products.map((product, index) => (
+                    <tr key={index}>
                       <ProductInfoCell>
                         <ProductImageBox>
                           {/* eslint-disable-next-line @next/next/no-img-element */}

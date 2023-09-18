@@ -11,6 +11,7 @@ const ProductSchema = new Schema(
     stock: { type: Number },
     enabled: { type: Boolean },
     sells: { type: Number },
+    score: { type: Number },
   },
   {
     timestamps: true,

@@ -66,12 +66,11 @@ export default function SearchProducts({ category }) {
 
   const [orderProd, setOrderProd] = useState(order || "");
   const [searchInp, setSearchInp] = useState(search || "");
+  const [clearSearch, setClearSearch] = useState(false);
 
   useEffect(() => {
-    if (orderProd) {
-      handleSearch();
-    }
-  }, [orderProd]);
+    handleSearch();
+  }, [orderProd, clearSearch]);
 
   let url = `/products?page=1${searchInp ? `&search=${searchInp}` : ""}${
     orderProd ? `&order=${orderProd}` : ""
@@ -84,7 +83,12 @@ export default function SearchProducts({ category }) {
   }
 
   for (const prop in router.query) {
-    if (prop !== "page" && prop !== "id" && prop !== "search" && prop !== "order" ) {
+    if (
+      prop !== "page" &&
+      prop !== "id" &&
+      prop !== "search" &&
+      prop !== "order"
+    ) {
       url += `&${prop}=${router.query[prop]}`;
     }
   }
@@ -99,7 +103,12 @@ export default function SearchProducts({ category }) {
         <InputSearch
           type="text"
           value={searchInp}
-          onChange={(ev) => setSearchInp(ev.target.value)}
+          onChange={(ev) => {
+            setSearchInp(ev.target.value);
+            if (ev.target.value === "") {
+              setClearSearch(!clearSearch);
+            }
+          }}
           onKeyDown={(ev) => {
             if (ev.key === "Enter") {
               handleSearch(ev.target.value);

@@ -64,18 +64,7 @@ export default function CategotyPage({ categoryRelation, products }) {
     return propertiesToFill;
   }
 
-  function handleProductProp(propName, value) {
-    setProperties((prev) => {
-      const newProductProps = { ...prev };
-      if (value === "") {
-        delete newProductProps[propName];
-        return newProductProps;
-      } else {
-        newProductProps[propName] = value;
-        return newProductProps;
-      }
-    });
-  }
+ 
 
   const propertiesToFill = propertiesToFillFunc(categoriesProperties);
 
@@ -92,9 +81,8 @@ export default function CategotyPage({ categoryRelation, products }) {
           categoryRelation={categoryRelation}
           propertiesToFill={propertiesToFill}
           setNewR={setNewR}
-          handleProductProp={handleProductProp}
-          r={r}
           properties={properties}
+          setProperties={setProperties}
         />
         <ProductsGrid products={products} />
 

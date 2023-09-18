@@ -20,11 +20,26 @@ export default function CategoryFilters({
   categoryRelation,
   propertiesToFill,
   setNewR,
-  handleProductProp,
   properties,
+  setProperties,
 }) {
   const router = useRouter();
   const { r, id } = router.query;
+
+  function handleProductProp(propName, value) {
+    setProperties((prev) => {
+      const newProductProps = { ...prev };
+      if (value === "") {
+        delete newProductProps[propName];
+        return newProductProps;
+      } else {
+        newProductProps[propName] = value;
+        return newProductProps;
+      }
+    });
+  }
+
+
   return (
     <Container>
       <div>
