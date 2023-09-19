@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import imageErr404 from "../Images/error 404.png";
+import imageErr404 from "../../Images/error 404.png";
 
 const Image = styled.img`
   max-width: 100%;

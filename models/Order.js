@@ -2,7 +2,13 @@ const { Schema, model, models, default: mongoose } = require("mongoose");
 
 const OrderSchema = new Schema(
   {
-    line_items: Object,
+    line_items: [
+      {
+        quantity: Number,
+        price_data: Object,
+        product_id: { type: mongoose.Types.ObjectId, ref: "Product" },
+      },
+    ],
     name: String,
     email: String,
     city: String,

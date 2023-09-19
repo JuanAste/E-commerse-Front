@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Title from "@/components/Title";
 import Paginate from "@/components/productsPage/Paginate";
 import ProductsGrid from "@/components/productsPage/ProducstGrid";
-import SearchProducts from "@/components/SearchProducts";
+import SearchProducts from "@/components/productsPage/SearchProducts";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
