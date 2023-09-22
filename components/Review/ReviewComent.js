@@ -2,13 +2,41 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+import Button from "../Button";
+
+const Content = styled.form`
+  border: 1px solid #222;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 40px;
+`;
+
+const ContentScore = styled.div`
+  margin-top: 2px;
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+`;
+
+const InputComment = styled.textarea`
+  max-width: 99%;
+  min-width: 99%;
+  min-height: 3rem;
+`;
+
+const ContentButton = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+`;
 
 export default function ReviewComment({ review }) {
   const { data: session } = useSession();
   const router = useRouter();
 
   const [reviewData, setReviewData] = useState({
-    score: review?.score || 0,
+    score: review?.score || 1,
     comment: review?.comment || "",
     ProductId: router.query.id || "",
     _id: review?._id,
@@ -41,7 +69,6 @@ export default function ReviewComment({ review }) {
   }
 
   async function SubmitReview(ev) {
-    // ev.preventDefault();
     try {
       if (review) {
         await axios.put("/api/review", reviewData);
@@ -53,13 +80,11 @@ export default function ReviewComment({ review }) {
     }
   }
 
-  console.log(reviewData);
-
   return (
     <div>
-      <form onSubmit={SubmitReview}>
-        <div>
-          <span>Calificación: </span>
+      <Content onSubmit={SubmitReview}>
+        <ContentScore>
+          <span>Qualification: </span>
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
@@ -72,15 +97,21 @@ export default function ReviewComment({ review }) {
               &#9733;
             </span>
           ))}
-        </div>
-        <textarea
+        </ContentScore>
+        <InputComment
           name="comment"
           value={reviewData.comment}
           onChange={handleChange}
           placeholder="Deja tu comentario sobre el producto"
         />
-        <div>{review ? <button>Update</button> : <button>Submit</button>}</div>
-      </form>
+        <ContentButton>
+          {review ? (
+            <Button blue={1}>Update</Button>
+          ) : (
+            <Button greenSave={1}>Submit</Button>
+          )}
+        </ContentButton>
+      </Content>
     </div>
   );
 }

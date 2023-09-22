@@ -76,12 +76,12 @@ export const ButtonStyle = css`
       }
     `}
         ${(props) =>
-        props.red &&
-        css`
-          background-color: red;
-          border: 1px solid #0d3d29;
-          color: white;
-        `}
+    props.red &&
+    css`
+      background-color: red;
+      border: 1px solid #0d3d29;
+      color: white;
+    `}
     ${(props) =>
     props.hoverPrimary &&
     css`
@@ -117,7 +117,30 @@ export const ButtonStyle = css`
         color: #fff;
       }
     `}
-    `;
+    ${(props) =>
+    props.blue &&
+    css`
+      background-color: #007FFF;
+      border: 1px solid #007FFF;
+      color: white;
+      &:hover {
+        background-color: white;
+        color: #007FFF;
+      }
+    `}
+    ${(props) =>
+    props.greenSave &&
+    css`
+      background-color: #17B169;
+      border: 1px solid #17B169;
+      color: white;
+      &:hover {
+        background-color: white;
+        color: #17B169;
+      }
+    `}
+    
+`;
 
 const StyledButton = styled.button`
   ${ButtonStyle};

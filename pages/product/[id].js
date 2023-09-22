@@ -31,6 +31,10 @@ const PriceRow = styled.div`
   align-items: center;
 `;
 
+const ContentScore = styled.div`
+  font-size: 2rem;
+`;
+
 export default function ProductPage({ product, order, review, reviews }) {
   const { addProduct } = useContext(CartContext);
 
@@ -45,6 +49,18 @@ export default function ProductPage({ product, order, review, reviews }) {
             </WhiteBox>
             <div>
               <Title>{product.title}</Title>
+              <ContentScore>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    style={{
+                      color: star <= product.score ? "gold" : "lightgray",
+                    }}
+                  >
+                    &#9733;
+                  </span>
+                ))}
+              </ContentScore>
               <p>{product.description}</p>
               <PriceRow>
                 <div>
@@ -89,7 +105,7 @@ export async function getServerSideProps(context) {
       ProductId: id,
     });
 
-    const reviews = await Review.find();
+    const reviews = await Review.find({ ProductId: id }).sort({ createdAt: 1 });
 
     return {
       props: {

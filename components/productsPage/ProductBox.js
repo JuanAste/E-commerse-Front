@@ -57,7 +57,11 @@ const Price = styled.div`
   }
 `;
 
-export default function ProductBox({ _id, title, description, price, images }) {
+const ContentScore = styled.div`
+  font-size: 1.4rem;
+`;
+
+export default function ProductBox({ _id, title, price, images, score }) {
   const { addProduct } = useContext(CartContext);
   const url = "/product/" + _id;
 
@@ -69,6 +73,20 @@ export default function ProductBox({ _id, title, description, price, images }) {
         </div>
       </WhiteBox>
       <ProductInfoBox>
+        {score ? (
+          <ContentScore>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                style={{
+                  color: star <= score ? "gold" : "lightgray",
+                }}
+              >
+                &#9733;
+              </span>
+            ))}
+          </ContentScore>
+        ) : null}
         <Title href={url}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>

@@ -1,4 +1,5 @@
 import { mongooseConnect } from "@/lib/mongoose";
+import { Product } from "@/models/Product";
 import { Review } from "@/models/Review";
 
 export default async function handler(req, res) {
@@ -14,6 +15,17 @@ export default async function handler(req, res) {
       userId,
       ProductId,
     });
+
+    const reviews = await Review.find({ ProductId });
+
+    const totalScore = reviews.reduce(
+      (acc, rev) => acc + parseInt(rev.score),
+      0
+    );
+    const averageScore = totalScore / reviews.length;
+
+    await Product.updateOne({ _id: ProductId }, { score: averageScore });
+
     res.json(true);
   }
 
@@ -30,6 +42,17 @@ export default async function handler(req, res) {
         ProductId,
       }
     );
+
+    const reviews = await Review.find({ ProductId });
+
+    const totalScore = reviews.reduce(
+      (acc, rev) => acc + parseInt(rev.score),
+      0
+    );
+    const averageScore = totalScore / reviews.length;
+
+    await Product.updateOne({ _id: ProductId }, { score: averageScore });
+
     res.json(true);
   }
 }
