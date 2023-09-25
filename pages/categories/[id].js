@@ -15,8 +15,14 @@ export default function CategotyPage({ categoryRelation, products }) {
   const router = useRouter();
   const { r, id, page, order, search } = router.query;
 
+  const [loading, setLoading] = useState(true);
+  const [resetPage, setResetPage] = useState(false);
   const [newR, setNewR] = useState(r || "");
   const [properties, setProperties] = useState({});
+
+  useEffect(() => {
+    setLoading(false);
+  }, [categoryRelation, products]);
 
   useEffect(() => {
     let data = "";
@@ -37,7 +43,10 @@ export default function CategotyPage({ categoryRelation, products }) {
       }
     }
 
-    router.push(`/categories/${id}?page=${page ? page : 1}${data}`);
+    router.push(
+      `/categories/${id}?page=${!resetPage ? (page ? page : 1) : 1}${data}`
+    );
+    setResetPage(false);
   }, [newR, properties, id, page]);
 
   const [categoryName, categoriesProperties] = (() => {
@@ -64,31 +73,34 @@ export default function CategotyPage({ categoryRelation, products }) {
     return propertiesToFill;
   }
 
- 
-
   const propertiesToFill = propertiesToFillFunc(categoriesProperties);
 
   return (
-    <div>
-      <Header />
-      <Center>
-        <Title>
-          {categoryName.name.charAt(0).toUpperCase() +
-            categoryName.name.slice(1)}
-        </Title>
-        <SearchProducts category={true} />
-        <CategoryFilters
-          categoryRelation={categoryRelation}
-          propertiesToFill={propertiesToFill}
-          setNewR={setNewR}
-          properties={properties}
-          setProperties={setProperties}
-        />
-        <ProductsGrid products={products} />
+    <>
+      {loading ? null : (
+        <div>
+          <Header />
+          <Center>
+            <Title>
+              {categoryName.name.charAt(0).toUpperCase() +
+                categoryName.name.slice(1)}
+            </Title>
+            <SearchProducts category={true} />
+            <CategoryFilters
+              categoryRelation={categoryRelation}
+              propertiesToFill={propertiesToFill}
+              setNewR={setNewR}
+              properties={properties}
+              setProperties={setProperties}
+              setResetPage={setResetPage}
+            />
+            <ProductsGrid products={products} />
 
-        <Paginate products={products} url={`categories/${id}`} />
-      </Center>
-    </div>
+            <Paginate products={products} url={`categories/${id}`} />
+          </Center>
+        </div>
+      )}
+    </>
   );
 }
 

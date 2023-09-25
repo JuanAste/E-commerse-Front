@@ -12,7 +12,7 @@ import { Order } from "@/models/Order";
 import { Product } from "@/models/Product";
 import { Review } from "@/models/Review";
 import { getSession } from "next-auth/react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ColWrapper = styled.div`
@@ -38,49 +38,59 @@ const ContentScore = styled.div`
 export default function ProductPage({ product, order, review, reviews }) {
   const { addProduct } = useContext(CartContext);
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [product]);
+
   return (
     <>
-      <Header />
-      <Center>
-        {!!product && (
-          <ColWrapper>
-            <WhiteBox>
-              <ProductImages images={product.images} />
-            </WhiteBox>
-            <div>
-              <Title>{product.title}</Title>
-              <ContentScore>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    style={{
-                      color: star <= product.score ? "gold" : "lightgray",
-                    }}
-                  >
-                    &#9733;
-                  </span>
-                ))}
-              </ContentScore>
-              <p>{product.description}</p>
-              <PriceRow>
+      {loading ? null : (
+        <>
+          <Header />
+          <Center>
+            {!!product && (
+              <ColWrapper>
+                <WhiteBox>
+                  <ProductImages images={product.images} />
+                </WhiteBox>
                 <div>
-                  <Title>${product.price}</Title>
+                  <Title>{product.title}</Title>
+                  <ContentScore>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        style={{
+                          color: star <= product.score ? "gold" : "lightgray",
+                        }}
+                      >
+                        &#9733;
+                      </span>
+                    ))}
+                  </ContentScore>
+                  <p>{product.description}</p>
+                  <PriceRow>
+                    <div>
+                      <Title>${product.price}</Title>
+                    </div>
+                    <div>
+                      <Button
+                        isprimary={1}
+                        hoverOutline={1}
+                        onClick={() => addProduct(product._id)}
+                      >
+                        <CartIcon /> Add to cart
+                      </Button>
+                    </div>
+                  </PriceRow>
                 </div>
-                <div>
-                  <Button
-                    primary={1}
-                    hoverOutline={1}
-                    onClick={() => addProduct(product._id)}
-                  >
-                    <CartIcon /> Add to cart
-                  </Button>
-                </div>
-              </PriceRow>
-            </div>
-          </ColWrapper>
-        )}
-        <Reviews order={order} review={review} reviews={reviews} />
-      </Center>
+              </ColWrapper>
+            )}
+            <Reviews order={order} review={review} reviews={reviews} />
+          </Center>
+        </>
+      )}
     </>
   );
 }

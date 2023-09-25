@@ -91,10 +91,10 @@ export default function ProductBox({ _id, title, price, images, score }) {
         <PriceRow>
           <Price>${price}</Price>
           <Button
-            block={1}
-            primary={1}
-            outline={1}
-            hoverPrimary={1}
+            isblock={1}
+            isprimary={1}
+            isoutline={1}
+            hoverprimary={1}
             onClick={() => addProduct(_id)}
           >
             Add to cart

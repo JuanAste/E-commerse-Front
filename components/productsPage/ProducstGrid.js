@@ -10,13 +10,26 @@ const StyledProductsGrid = styled.div`
   }
 `;
 
+const NotProductsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function ProductsGrid({ products }) {
   return (
-    <StyledProductsGrid>
-      {!!products.length &&
-        products.map((product) => (
-          <ProductBox key={product._id} {...product} />
-        ))}
-    </StyledProductsGrid>
+    <div>
+      {products.length ? (
+        <StyledProductsGrid>
+          {products.map((product) => (
+            <ProductBox key={product._id} {...product} />
+          ))}
+        </StyledProductsGrid>
+      ) : (
+        <NotProductsContainer>
+          <h2>There are no more products available at this time.</h2>
+        </NotProductsContainer>
+      )}
+    </div>
   );
 }

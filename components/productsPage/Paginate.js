@@ -53,7 +53,7 @@ export default function Paginate({ products, url }) {
   let urlQuery = "";
 
   for (const prop in router.query) {
-    if (prop !== "page" && prop !== "id" ) {
+    if (prop !== "page" && prop !== "id") {
       urlQuery += `&${prop}=${router.query[prop]}`;
     }
   }
@@ -70,8 +70,8 @@ export default function Paginate({ products, url }) {
 
       <PageNum>{page}</PageNum>
 
-      {products.length >= 12 ? (
-        <PageLink href={`/products?page=${parseInt(page) + 1}${urlQuery}`}>
+      {products.length >= 2 ? (
+        <PageLink href={`/${url}?page=${parseInt(page) + 1}${urlQuery}`}>
           Next Page
         </PageLink>
       ) : (

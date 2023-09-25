@@ -4,16 +4,27 @@ import Title from "@/components/Title";
 import CategoriesSelect from "@/components/categoriesPage/CategoriesSelect";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Category } from "@/models/Category";
+import { useEffect, useState } from "react";
 
-export default function CategoryPage({categories}) {
+export default function CategoryPage({ categories }) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [categories]);
+
   return (
-    <div>
-      <Header />
-      <Center>
-        <Title>Categories</Title>
-        <CategoriesSelect categories={categories} />
-      </Center>
-    </div>
+    <>
+      {loading ? null : (
+        <div>
+          <Header />
+          <Center>
+            <Title>Categories</Title>
+            <CategoriesSelect categories={categories} />
+          </Center>
+        </div>
+      )}
+    </>
   );
 }
 

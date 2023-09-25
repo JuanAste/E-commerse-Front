@@ -15,13 +15,13 @@ const Select = styled.select`
   border-radius: 5px;
 `;
 
-
 export default function CategoryFilters({
   categoryRelation,
   propertiesToFill,
   setNewR,
   properties,
   setProperties,
+  setResetPage,
 }) {
   const router = useRouter();
   const { r, id } = router.query;
@@ -39,24 +39,28 @@ export default function CategoryFilters({
     });
   }
 
-
   return (
     <Container>
-      <div>
-        <label>Category</label>
+      {categoryRelation.length > 1 ? (
         <div>
-          <Select
-            value={r ? r : id}
-            onChange={(ev) => setNewR(ev.target.value)}
-          >
-            {categoryRelation?.map((category, index) => (
-              <option key={index} value={category._id}>
-                {category.name}
-              </option>
-            ))}
-          </Select>
+          <label>Category</label>
+          <div>
+            <Select
+              value={r ? r : id}
+              onChange={(ev) => {
+                setNewR(ev.target.value);
+                setResetPage(true);
+              }}
+            >
+              {categoryRelation?.map((category, index) => (
+                <option key={index} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
+          </div>
         </div>
-      </div>
+      ) : null}
       {propertiesToFill?.map((p, index) => (
         <div key={index}>
           <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
@@ -65,6 +69,7 @@ export default function CategoryFilters({
               value={properties[p.name]}
               onChange={(ev) => {
                 handleProductProp(p.name, ev.target.value);
+                setResetPage(true);
               }}
             >
               <option value={""}>All</option>

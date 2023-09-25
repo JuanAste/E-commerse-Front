@@ -157,7 +157,7 @@ export default function UserInfo({ userData, setUserData }) {
           <h3>Postal code:</h3>
           <h4>{userData.postalCode}</h4>
           <ContentButton>
-            <Button hoverPrimary={1} onClick={() => setEdit(true)}>
+            <Button hoverprimary={1} onClick={() => setEdit(true)}>
               Edit
             </Button>
             <Button hoverRed={1} red={1} onClick={logOut}>

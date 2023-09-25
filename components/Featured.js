@@ -82,7 +82,7 @@ export default function Featured({ product }) {
               <ButtonsWrapper>
                 <ButtonLink
                   href={"/product/" + product._id}
-                  outline={1}
+                  isoutline={1}
                   white={1}
                 >
                   Read more

@@ -318,7 +318,7 @@ export default function CartPage() {
                 name={"country"}
                 onChange={handleInputChange}
               />
-              <Button onClick={goToPayment} black={1} block={1}>
+              <Button onClick={goToPayment} black={1} isblock={1}>
                 Continue to payment
               </Button>
               {!!errorCheckout && <ErrorP>{errorCheckout}</ErrorP>}
