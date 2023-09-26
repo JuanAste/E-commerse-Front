@@ -70,7 +70,7 @@ export default function Paginate({ products, url }) {
 
       <PageNum>{page}</PageNum>
 
-      {products.length >= 2 ? (
+      {products.length >= 12 ? (
         <PageLink href={`/${url}?page=${parseInt(page) + 1}${urlQuery}`}>
           Next Page
         </PageLink>
