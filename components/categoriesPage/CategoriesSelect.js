@@ -23,21 +23,24 @@ const CategoryContainer = styled.div`
 
 const CategoryImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-radius: 5px;
 `;
 
 const CategoryName = styled.h1`
-  position: relative;
-  top: 80%;
+  background-color: black;
+  padding-left:8px;
+  padding-right:8px;
+  border-radius:5px;  
+  position: absolute;
+  top: 75%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: 100%;
+  width: auto;
   text-align: center;
-  color:white;
+  color: white;
 `;
 
 const LinkContains = styled(Link)`
