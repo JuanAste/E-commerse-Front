@@ -108,7 +108,7 @@ export async function getServerSideProps(context) {
   try {
     await mongooseConnect();
     const { id, r, page = 1, order, search } = context.query;
-    const filter = { category: [] };
+    const filter = { category: [], enabled: true };
 
     const itemsPerPage = 12;
     const skipCount = (page - 1) * itemsPerPage;

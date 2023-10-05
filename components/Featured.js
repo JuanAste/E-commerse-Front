@@ -5,6 +5,7 @@ import ButtonLink from "./ButtonLink";
 import CartIcon from "./Icons/Cart";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
+import imageErr404 from "../Images/error 404.png";
 
 const Bg = styled.div`
   background-color: #222;
@@ -61,7 +62,7 @@ const ButtonsWrapper = styled.div`
 `;
 
 const BigImage = styled.img`
-  border-radius:10px;
+  border-radius: 10px;
 `;
 
 export default function Featured({ product }) {
@@ -95,7 +96,7 @@ export default function Featured({ product }) {
             </div>
           </Column>
           <Column>
-            <BigImage src={product.images[0]} alt="" />
+            <BigImage src={product.images[0] || imageErr404.src} alt="" />
           </Column>
         </ColumnsWrapper>
       </Center>

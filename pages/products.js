@@ -58,7 +58,7 @@ export async function getServerSideProps({ query }) {
 
   const orderOptions = mapOrderValue(order);
   const products = await Product.find(
-    { title: { $regex: new RegExp(search, "i") } },
+    { enabled: true, title: { $regex: new RegExp(search, "i") } },
     null,
     {
       sort: orderOptions,
