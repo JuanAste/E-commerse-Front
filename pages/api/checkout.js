@@ -85,21 +85,25 @@ export default async function handle(req, res) {
       paid: false,
     });
 
-    const session = await stripe.checkout.sessions.create({
-      line_items,
-      mode: "payment",
-      customer_email: email,
-      success_url: process.env.PUBLIC_URL + "/cart?success=1",
-      cancel_url: process.env.PUBLIC_URL + "/cart?canceled=1",
-      metadata: {
-        orderId: orderDoc._id.toString(),
-      },
-    });
-
-    res.json({
-      url: session.url,
-    });
+    try {
+      const session = await stripe.checkout.sessions.create({
+        line_items,
+        mode: "payment",
+        customer_email: email,
+        success_url: process.env.PUBLIC_URL + "/cart?success=1",
+        cancel_url: process.env.PUBLIC_URL + "/cart?canceled=1",
+        metadata: {
+          orderId: orderDoc._id.toString(),
+        },
+      });
+      res.json({
+        url: session.url,
+      });
+    } catch (error) {
+      await Order.findByIdAndDelete(orderDoc._id);
+      res.status(500).json(error.message);
+    }
   } catch (error) {
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 }
