@@ -15,6 +15,9 @@ const StyleUserInfoForm = styled.form`
     padding: 10px;
     min-height: 15px;
     width: 94%;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
   }
 `;
 
@@ -41,19 +44,6 @@ const ButtonsForm = styled.div`
   grid-auto-flow: column;
 `;
 
-const StyleUserInfo = styled.header`
-  background-color: #222;
-  color: white;
-  padding: 40px;
-  border-radius: 6px;
-  h4 {
-    background-color: white;
-    color: #222;
-    padding: 10px;
-    min-height: 15px;
-    width: 94%;
-  }
-`;
 
 export default function UserInfo({ userData, setUserData }) {
   const router = useRouter();
@@ -80,50 +70,56 @@ export default function UserInfo({ userData, setUserData }) {
 
   return (
     <div>
-      {edit ? (
-        <StyleUserInfoForm>
-          <ContentImage>
-            <UserImage src={userData.image || imageErr404.src} alt="" />
-          </ContentImage>
-          <h3>Name:</h3>
+      <StyleUserInfoForm>
+        <ContentImage>
+          <UserImage src={userData.image || imageErr404.src} alt="" />
+        </ContentImage>
+        <h3>Name:</h3>
+        <input
+          value={userData.name}
+          name={"name"}
+          onChange={handleInputChange}
+          disabled={!edit}
+        />
+        <h3>Email:</h3>
+        <input
+          value={userData.email}
+          name={"email"}
+          onChange={handleInputChange}
+          disabled={!edit}
+        />
+        <h3>country:</h3>
+        {
           <input
-            value={userData.name}
-            name={"name"}
+            value={userData.country}
+            name={"country"}
             onChange={handleInputChange}
+            disabled={!edit}
           />
-          <h3>Email:</h3>
-          <input
-            value={userData.email}
-            name={"email"}
-            onChange={handleInputChange}
-          />
-          <h3>country:</h3>
-          {
-            <input
-              value={userData.country}
-              name={"country"}
-              onChange={handleInputChange}
-            />
-          }
-          <h3>city:</h3>
-          <input
-            value={userData.city}
-            name={"city"}
-            onChange={handleInputChange}
-          />
-          <h3>Street address:</h3>
-          <input
-            value={userData.streetAddress}
-            name={"streetAddress"}
-            onChange={handleInputChange}
-          />
-          <h3>postalCode:</h3>
-          <input
-            value={userData.postalCode}
-            name={"postalCode"}
-            onChange={handleInputChange}
-          />
-          <ContentButton>
+        }
+        <h3>city:</h3>
+        <input
+          value={userData.city}
+          name={"city"}
+          onChange={handleInputChange}
+          disabled={!edit}
+        />
+        <h3>Street address:</h3>
+        <input
+          value={userData.streetAddress}
+          name={"streetAddress"}
+          onChange={handleInputChange}
+          disabled={!edit}
+        />
+        <h3>postalCode:</h3>
+        <input
+          value={userData.postalCode}
+          name={"postalCode"}
+          onChange={handleInputChange}
+          disabled={!edit}
+        />
+        <ContentButton>
+          {edit ? (
             <ButtonsForm>
               <Button hoverGreen={1} onClick={UpdateUser}>
                 Save
@@ -137,35 +133,18 @@ export default function UserInfo({ userData, setUserData }) {
                 Cancel
               </Button>
             </ButtonsForm>
-          </ContentButton>
-        </StyleUserInfoForm>
-      ) : (
-        <StyleUserInfo>
-          <ContentImage>
-            <UserImage src={userData.image || imageErr404.src} alt="" />
-          </ContentImage>
-          <h3>Name:</h3>
-          <h4>{userData.name}</h4>
-          <h3>Email:</h3>
-          <h4>{userData.email}</h4>
-          <h3>Country:</h3>
-          <h4>{userData.country}</h4>
-          <h3>City:</h3>
-          <h4>{userData.city}</h4>
-          <h3>Street address:</h3>
-          <h4>{userData.streetAddress}</h4>
-          <h3>Postal code:</h3>
-          <h4>{userData.postalCode}</h4>
-          <ContentButton>
-            <Button hoverprimary={1} onClick={() => setEdit(true)}>
-              Edit
-            </Button>
-            <Button hoverRed={1} red={1} onClick={logOut}>
-              Logout
-            </Button>
-          </ContentButton>
-        </StyleUserInfo>
-      )}
+          ) : (
+            <>
+              <Button hoverprimary={1} onClick={() => setEdit(true)}>
+                Edit
+              </Button>
+              <Button hoverRed={1} red={1} onClick={logOut}>
+                Logout
+              </Button>
+            </>
+          )}
+        </ContentButton>
+      </StyleUserInfoForm>
     </div>
   );
 }

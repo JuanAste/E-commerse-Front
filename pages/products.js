@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Paginate from "@/components/productsPage/Paginate";
 import ProductsGrid from "@/components/productsPage/ProducstGrid";
 import SearchProducts from "@/components/productsPage/SearchProducts";
+import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
@@ -17,7 +18,7 @@ export default function ProductsPage({ products }) {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? <Spinner size={80} /> : (
         <div>
           <Header />
           <Center>

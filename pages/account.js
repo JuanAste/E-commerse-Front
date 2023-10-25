@@ -7,6 +7,7 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Order } from "@/models/Order";
 import UserInfo from "@/components/accountPage/UserInfo";
 import LastOrder from "@/components/accountPage/LastOrder";
+import Spinner from "@/components/Spinner";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -53,7 +54,9 @@ export default function Account({ newOrders }) {
 
   return (
     <div>
-      {loading ? null : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <div>
           <Header />
           <Center>
@@ -76,7 +79,7 @@ export async function getServerSideProps(context) {
   const userId = session?.user?.id;
   const newOrders = await Order.findOne({
     userId,
-    paid:true,
+    paid: true,
   })
     .select("line_items")
     .sort({ _id: -1 });

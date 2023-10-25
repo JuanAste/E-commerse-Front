@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import imageErr404 from "../Images/error 404.png";
 import { useSession } from "next-auth/react";
+import Spinner from "@/components/Spinner";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -76,6 +77,7 @@ export default function CartPage() {
     useContext(CartContext);
   const { data: session } = useSession();
 
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(session?.user);
   const [userData, setUserData] = useState({
     _id: "",
@@ -113,6 +115,7 @@ export default function CartPage() {
         .post("/api/cart", { ids: cartProducts })
         .then((result) => {
           setProducts(result.data);
+          setLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -156,10 +159,8 @@ export default function CartPage() {
         setErrorCheckout(
           "Fill in the parameters so we can send you your product"
         );
-      }else if(user.ban){
-        setErrorCheckout(
-          "You can't buy products you are banned"
-        );
+      } else if (user.ban) {
+        setErrorCheckout("You can't buy products you are banned");
       } else {
         const response = await axios.post("/api/checkout", userData);
         if (response.data.url) {
@@ -211,61 +212,69 @@ export default function CartPage() {
       <Header />
       <Center>
         <ColumnsWrapper>
-          <WhiteBox>
-            <h2>Cart</h2>
-            {!cartProducts?.length && <div>Your cart is empty</div>}
-            {!!products?.length && (
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product, index) => (
-                    <tr key={index}>
-                      <ProductInfoCell>
-                        <ProductImageBox>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={product.images[0] || imageErr404.src}
-                            alt=""
-                          />
-                        </ProductImageBox>
-                        {product.title}
-                      </ProductInfoCell>
-                      <td>
-                        <Button onClick={() => lessOfThisProduct(product._id)}>
-                          -
-                        </Button>
-                        <QuantitySpan>
-                          {
-                            cartProducts.filter((id) => id === product._id)
-                              .length
-                          }
-                        </QuantitySpan>
-                        <Button onClick={() => moreOfThisProduct(product._id)}>
-                          +
-                        </Button>
-                      </td>
-                      <td>
-                        $
-                        {cartProducts.filter((id) => id === product._id)
-                          .length * product.price}
-                      </td>
+          {loading ? (
+            <Spinner size={80} />
+          ) : (
+            <WhiteBox>
+              <h2>Cart</h2>
+              {!cartProducts?.length && <div>Your cart is empty</div>}
+              {!!products?.length && (
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
                     </tr>
-                  ))}
-                  <tr>
-                    <Total>Total:</Total>
-                    <td></td>
-                    <td>${total}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            )}
-          </WhiteBox>
+                  </thead>
+                  <tbody>
+                    {products.map((product, index) => (
+                      <tr key={index}>
+                        <ProductInfoCell>
+                          <ProductImageBox>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={product.images[0] || imageErr404.src}
+                              alt=""
+                            />
+                          </ProductImageBox>
+                          {product.title}
+                        </ProductInfoCell>
+                        <td>
+                          <Button
+                            onClick={() => lessOfThisProduct(product._id)}
+                          >
+                            -
+                          </Button>
+                          <QuantitySpan>
+                            {
+                              cartProducts.filter((id) => id === product._id)
+                                .length
+                            }
+                          </QuantitySpan>
+                          <Button
+                            onClick={() => moreOfThisProduct(product._id)}
+                          >
+                            +
+                          </Button>
+                        </td>
+                        <td>
+                          $
+                          {cartProducts.filter((id) => id === product._id)
+                            .length * product.price}
+                        </td>
+                      </tr>
+                    ))}
+                    <tr>
+                      <Total>Total:</Total>
+                      <td></td>
+                      <td>${total}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              )}
+            </WhiteBox>
+          )}
           {!!cartProducts?.length && (
             <WhiteBox>
               <h2>Order information</h2>

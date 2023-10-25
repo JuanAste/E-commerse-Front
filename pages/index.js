@@ -1,5 +1,6 @@
 import Featured from "@/components/Featured";
 import Header from "@/components/Header";
+import Spinner from "@/components/Spinner";
 import NewProducts from "@/components/productsPage/NewProducts";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
@@ -15,7 +16,9 @@ export default function Home({ featureProduct, newProducts }) {
   return (
     <div>
       <Header />
-      {loading ? null : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <>
           <Featured product={featureProduct} />
           <NewProducts products={newProducts} />
@@ -28,7 +31,7 @@ export default function Home({ featureProduct, newProducts }) {
 export async function getServerSideProps() {
   await mongooseConnect();
   const featureProduct = await Product.findOne().sort({ createdAt: -1 }).exec();
-  const newProducts = await Product.find({enabled:true}, null, {
+  const newProducts = await Product.find({ enabled: true }, null, {
     sort: { createdAt: -1 },
     limit: 12,
   });

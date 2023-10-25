@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import CartIcon from "@/components/Icons/Cart";
 import ProductImages from "@/components/productsPage/ProductImages";
 import Reviews from "@/components/Review/Reviews";
+import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import WhiteBox from "@/components/WhiteBox";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -46,7 +47,9 @@ export default function ProductPage({ product, order, review, reviews }) {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <>
           <Header />
           <Center>

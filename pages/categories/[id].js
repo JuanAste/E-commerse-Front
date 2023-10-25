@@ -10,6 +10,7 @@ import { Product } from "@/models/Product";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CategoryFilters from "@/components/categoriesPage/CategoryFilters";
+import Spinner from "@/components/Spinner";
 
 export default function CategotyPage({ categoryRelation, products }) {
   const router = useRouter();
@@ -77,7 +78,9 @@ export default function CategotyPage({ categoryRelation, products }) {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <div>
           <Header />
           <Center>

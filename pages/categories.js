@@ -1,5 +1,6 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
+import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import CategoriesSelect from "@/components/categoriesPage/CategoriesSelect";
 import { mongooseConnect } from "@/lib/mongoose";
@@ -15,7 +16,7 @@ export default function CategoryPage({ categories }) {
 
   return (
     <>
-      {loading ? null : (
+      {loading ? <Spinner size={80} /> : (
         <div>
           <Header />
           <Center>
