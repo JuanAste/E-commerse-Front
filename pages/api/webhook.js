@@ -47,4 +47,3 @@ export const config = {
   api: { bodyParser: false },
 };
 
-//fresh-fav-heal-valor
