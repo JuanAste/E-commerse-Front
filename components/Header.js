@@ -33,6 +33,7 @@ const StyledNav = styled.nav`
   right: 0;
   padding: 70px 20px 20px;
   background-color: #222;
+  z-index: 4;
   @media screen and (min-width: 768px) {
     display: flex;
     position: static;
@@ -95,16 +96,61 @@ export default function Header() {
           <Wrapper>
             <Logo href={"/"}>Ecommerce</Logo>
             <StyledNav mobilenavactive={mobileNavActive ? 1 : 0}>
-              <NavLink href={"/"}>Home</NavLink>
-              <NavLink href={"/products?page=1"}>All products</NavLink>
-              <NavLink href={"/categories"}>Categories</NavLink>
+              <NavLink
+                href={"/"}
+                onClick={(event) => {
+                  setTimeout(() => {
+                    setMobileNavActive((prev) => !prev);
+                  }, 400);
+                }}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                href={"/products?page=1"}
+                onClick={(event) => {
+                  setTimeout(() => {
+                    setMobileNavActive((prev) => !prev);
+                  }, 400);
+                }}
+              >
+                All products
+              </NavLink>
+              <NavLink
+                href={"/categories"}
+                onClick={(event) => {
+                  setTimeout(() => {
+                    setMobileNavActive((prev) => !prev);
+                  }, 500);
+                }}
+              >
+                Categories
+              </NavLink>
               {!session ? (
                 <NavButton onClick={() => signIn("google")}>Account</NavButton>
               ) : (
-                <NavLink href={"/account"}>Account</NavLink>
+                <NavLink
+                  href={"/account"}
+                  onClick={(event) => {
+                    setTimeout(() => {
+                      setMobileNavActive((prev) => !prev);
+                    }, 400);
+                  }}
+                >
+                  Account
+                </NavLink>
               )}
 
-              <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
+              <NavLink
+                href={"/cart"}
+                onClick={(event) => {
+                  setTimeout(() => {
+                    setMobileNavActive((prev) => !prev);
+                  }, 400);
+                }}
+              >
+                Cart ({cartProducts.length})
+              </NavLink>
             </StyledNav>
             <NavButtonIcon onClick={() => setMobileNavActive((prev) => !prev)}>
               <BarsIcon />

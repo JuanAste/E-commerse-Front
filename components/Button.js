@@ -92,7 +92,7 @@ export const ButtonStyle = css`
       }
     `}
     ${(props) =>
-    props.hoverOutline &&
+    props.hoveroutline &&
     css`
       &:hover {
         background-color: transparent;
@@ -101,7 +101,7 @@ export const ButtonStyle = css`
       }
     `}
     ${(props) =>
-    props.hoverRed &&
+    props.hoverred &&
     css`
       &:hover {
         background-color: white;
@@ -110,7 +110,7 @@ export const ButtonStyle = css`
       }
     `}
     ${(props) =>
-    props.hoverGreen &&
+    props.hovergreen &&
     css`
       &:hover {
         background-color: #0d3d29;
@@ -129,7 +129,7 @@ export const ButtonStyle = css`
       }
     `}
     ${(props) =>
-    props.greenSave &&
+    props.greensave &&
     css`
       background-color: #17B169;
       border: 1px solid #17B169;

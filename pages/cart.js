@@ -118,10 +118,14 @@ export default function CartPage() {
           setLoading(false);
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
+          setErrorCheckout(error.response.data);
+          clearCart();
         });
     } else {
       setProducts([]);
+      setLoading(false);
     }
   }, [cartProducts]);
 

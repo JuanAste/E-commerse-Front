@@ -80,7 +80,7 @@ export default function ProductPage({ product, order, review, reviews }) {
                     <div>
                       <Button
                         isprimary={1}
-                        hoverOutline={1}
+                        hoveroutline={1}
                         onClick={() => addProduct(product._id)}
                       >
                         <CartIcon /> Add to cart

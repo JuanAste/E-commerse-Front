@@ -108,7 +108,7 @@ export default function ReviewComment({ review }) {
           {review ? (
             <Button blue={1}>Update</Button>
           ) : (
-            <Button greenSave={1}>Submit</Button>
+            <Button greensave={1}>Submit</Button>
           )}
         </ContentButton>
       </Content>

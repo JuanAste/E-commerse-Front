@@ -33,7 +33,6 @@ const CategoryName = styled.h1`
   padding-left:8px;
   padding-right:8px;
   border-radius:5px;  
-  position: absolute;
   top: 75%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -41,6 +40,10 @@ const CategoryName = styled.h1`
   width: auto;
   text-align: center;
   color: white;
+  position:absolute;
+  @media screen and (max-width: 768px) {
+    top: 60%;
+  }
 `;
 
 const LinkContains = styled(Link)`

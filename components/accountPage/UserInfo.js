@@ -121,11 +121,11 @@ export default function UserInfo({ userData, setUserData }) {
         <ContentButton>
           {edit ? (
             <ButtonsForm>
-              <Button hoverGreen={1} onClick={UpdateUser}>
+              <Button hovergreen={1} onClick={UpdateUser}>
                 Save
               </Button>
               <Button
-                hoverRed={1}
+                hoverred={1}
                 red={1}
                 type="button"
                 onClick={() => setEdit(false)}
@@ -138,7 +138,7 @@ export default function UserInfo({ userData, setUserData }) {
               <Button hoverprimary={1} onClick={() => setEdit(true)}>
                 Edit
               </Button>
-              <Button hoverRed={1} red={1} onClick={logOut}>
+              <Button hoverred={1} red={1} onClick={logOut}>
                 Logout
               </Button>
             </>
