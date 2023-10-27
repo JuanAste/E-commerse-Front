@@ -16,7 +16,9 @@ export default function CategoryPage({ categories }) {
 
   return (
     <>
-      {loading ? <Spinner size={80} /> : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <div>
           <Header />
           <Center>

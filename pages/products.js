@@ -18,7 +18,9 @@ export default function ProductsPage({ products }) {
 
   return (
     <>
-      {loading ? <Spinner size={80} /> : (
+      {loading ? (
+        <Spinner size={80} />
+      ) : (
         <div>
           <Header />
           <Center>
