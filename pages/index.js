@@ -1,3 +1,4 @@
+import About from "@/components/About";
 import Featured from "@/components/Featured";
 import Header from "@/components/Header";
 import Spinner from "@/components/Spinner";
@@ -14,7 +15,7 @@ export default function Home({ featureProduct, newProducts }) {
   }, [featureProduct, newProducts]);
 
   return (
-    <div>
+    <About>
       <Header />
       {loading ? (
         <Spinner size={80} />
@@ -24,7 +25,7 @@ export default function Home({ featureProduct, newProducts }) {
           <NewProducts products={newProducts} />
         </>
       )}
-    </div>
+    </About>
   );
 }
 
