@@ -8,6 +8,7 @@ import { Order } from "@/models/Order";
 import UserInfo from "@/components/accountPage/UserInfo";
 import LastOrder from "@/components/accountPage/LastOrder";
 import Spinner from "@/components/Spinner";
+import About from "@/components/About";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -53,7 +54,7 @@ export default function Account({ newOrders }) {
   }, [session]);
 
   return (
-    <div>
+    <About loading={loading}>
       {loading ? (
         <Spinner size={80} />
       ) : (
@@ -69,7 +70,7 @@ export default function Account({ newOrders }) {
           </Center>
         </div>
       )}
-    </div>
+    </About>
   );
 }
 
