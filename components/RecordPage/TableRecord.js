@@ -62,12 +62,12 @@ const StyledTable = styled.table`
     color: white;
   }
   ${(props) =>
-    props.delivered &&
+    props.delivered === "true" &&
     css`
       background-color: #006400;
     `}
   ${(props) =>
-    !props.delivered &&
+    props.delivered === "false" &&
     css`
       background-color: #ab0003;
     `}
@@ -104,7 +104,7 @@ export default function TableRecord({ orders }) {
             Order date: {new Date(order.createdAt).toLocaleDateString("es-ES")}{" "}(
             {order.delivered ? "Delivered" : "Undelivered"})
           </h3>
-          <StyledTable delivered={order.delivered}>
+          <StyledTable delivered={order.delivered ? "true" : "false"}>
             <thead>
               <tr>
                 <th>Product</th>
