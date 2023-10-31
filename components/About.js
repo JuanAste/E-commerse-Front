@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import styled from "styled-components";
-import Center from "./Center";
+import styled, { css } from "styled-components";
 import Link from "next/link";
 import Button from "./Button";
 
@@ -11,18 +10,34 @@ const Container = styled.div`
   color: white;
   display: flex;
   justify-content: center;
+  ${(props) =>
+    props.isloading === "true" &&
+    css`
+      display: none;
+    `}
 `;
+
+const ContainChild = styled.div`
+min-height:45rem;
+`
+
 const ColumnsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1.3fr 1fr 0.7fr;
   gap: 30px;
+  margin: 0rem 3rem;
   @media screen and (max-width: 767px) {
     grid-template-columns: 1fr 1fr;
   }
+  @media screen and (max-width: 300px) {
+    grid-template-columns: 1fr;
+  }
 `;
 const Social = styled.div`
-  gap: 20px;
+  gap: 2rem;
+  margin-top: 5px;
   display: flex;
+  justify-content: center;
 `;
 
 const NotColm = styled.div`
@@ -38,17 +53,24 @@ const NotColm = styled.div`
 `;
 
 const NotColm2 = styled.div`
+  text-align: center;
   @media screen and (max-width: 350px) {
     display: none;
   }
 `;
 
-export default function About({ children }) {
+const Contact = styled.div`
+  text-align: center;
+`;
+
+export default function About({ children, loading }) {
   return (
     <div>
+      <ContainChild>
       {children}
-      <Container>
-        <Center>
+      </ContainChild>
+      {loading ? null : (
+        <Container isloading={loading ? "true" : "false"}>
           <ColumnsWrapper>
             <NotColm>
               <h2>About us:</h2>
@@ -87,15 +109,15 @@ export default function About({ children }) {
                 </a>
               </Social>
             </NotColm2>
-            <div>
+            <Contact>
               <h2>Contact us:</h2>
               <Link href={"/contact"}>
                 <Button>Contact</Button>
               </Link>
-            </div>
+            </Contact>
           </ColumnsWrapper>
-        </Center>
-      </Container>
+        </Container>
+      )}
     </div>
   );
 }
