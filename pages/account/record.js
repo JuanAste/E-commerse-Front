@@ -5,18 +5,17 @@ import { Order } from "@/models/Order";
 import { getSession } from "next-auth/react";
 import TableRecord from "@/components/RecordPage/TableRecord";
 import { useEffect, useState } from "react";
+import About from "@/components/About";
 
 export default function RecordPage({ orders }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(false);
-    console.log("hola");
-    // console.log(orders);
   }, [orders]);
 
   return (
-    <div>
+    <About loading={loading}>
       {loading ? null : (
         <div>
           <Header />
@@ -32,7 +31,7 @@ export default function RecordPage({ orders }) {
           </Center>
         </div>
       )}
-    </div>
+    </About>
   );
 }
 
