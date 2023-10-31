@@ -11,6 +11,7 @@ import styled from "styled-components";
 import imageErr404 from "../Images/error 404.png";
 import { useSession } from "next-auth/react";
 import Spinner from "@/components/Spinner";
+import About from "@/components/About";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -194,7 +195,7 @@ export default function CartPage() {
 
   if (isSuccess) {
     return (
-      <>
+      <About loading={loading}>
         <Header />
         <Center>
           <ColumnsWrapper>
@@ -207,12 +208,12 @@ export default function CartPage() {
             </WhiteBox>
           </ColumnsWrapper>
         </Center>
-      </>
+      </About>
     );
   }
 
   return (
-    <>
+    <About loading={loading}>
       <Header />
       <Center>
         <ColumnsWrapper>
@@ -334,6 +335,6 @@ export default function CartPage() {
           )}
         </ColumnsWrapper>
       </Center>
-    </>
+    </About>
   );
 }
