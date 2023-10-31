@@ -1,6 +1,5 @@
 import Link from "next/link";
 import styled from "styled-components";
-import Center from "./Center";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./Icons/Bars";
@@ -13,14 +12,18 @@ const StyleHeader = styled.header`
 const Logo = styled(Link)`
   color: #fff;
   text-decoration: none;
-  position: relative;
-  z-index: 3;
+  z-index: 5;
+
+  ${(props) =>
+    props.mobilenavactive ? `position:fixed; margin-top:35px;` : ""}
 `;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+  margin: 0rem 3rem;
+  padding-bottom: 2rem;
 `;
 
 const StyledNav = styled.nav`
@@ -72,10 +75,16 @@ const NavButtonIcon = styled.button`
   color: white;
   cursor: pointer;
   position: relative;
-  z-index: 3;
+  ${(props) => (props.mobilenavactive ? ` position: fixed; right: 50px;` : "")}
+  z-index: 5;
   @media screen and (min-width: 768px) {
     display: none;
   }
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export default function Header() {
@@ -92,71 +101,33 @@ export default function Header() {
   return (
     <StyleHeader>
       {loading ? null : (
-        <Center>
-          <Wrapper>
-            <Logo href={"/"}>Ecommerce</Logo>
-            <StyledNav mobilenavactive={mobileNavActive ? 1 : 0}>
-              <NavLink
-                href={"/"}
-                onClick={(event) => {
-                  setTimeout(() => {
-                    setMobileNavActive((prev) => !prev);
-                  }, 400);
-                }}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                href={"/products?page=1"}
-                onClick={(event) => {
-                  setTimeout(() => {
-                    setMobileNavActive((prev) => !prev);
-                  }, 400);
-                }}
-              >
-                All products
-              </NavLink>
-              <NavLink
-                href={"/categories"}
-                onClick={(event) => {
-                  setTimeout(() => {
-                    setMobileNavActive((prev) => !prev);
-                  }, 500);
-                }}
-              >
-                Categories
-              </NavLink>
-              {!session ? (
-                <NavButton onClick={() => signIn("google")}>Account</NavButton>
-              ) : (
-                <NavLink
-                  href={"/account"}
-                  onClick={(event) => {
-                    setTimeout(() => {
-                      setMobileNavActive((prev) => !prev);
-                    }, 400);
-                  }}
-                >
-                  Account
-                </NavLink>
-              )}
+        // <Center>
+        <Wrapper>
+          <LogoWrapper>
+            <Logo href={"/"} mobilenavactive={mobileNavActive ? 1 : 0}>
+              Ecommerce
+            </Logo>
+          </LogoWrapper>
+          <StyledNav mobilenavactive={mobileNavActive ? 1 : 0}>
+            <NavLink href={"/"}>Home</NavLink>
+            <NavLink href={"/products?page=1"}>All products</NavLink>
+            <NavLink href={"/categories"}>Categories</NavLink>
+            {!session ? (
+              <NavButton onClick={() => signIn("google")}>Account</NavButton>
+            ) : (
+              <NavLink href={"/account"}>Account</NavLink>
+            )}
 
-              <NavLink
-                href={"/cart"}
-                onClick={(event) => {
-                  setTimeout(() => {
-                    setMobileNavActive((prev) => !prev);
-                  }, 400);
-                }}
-              >
-                Cart ({cartProducts.length})
-              </NavLink>
-            </StyledNav>
-            <NavButtonIcon onClick={() => setMobileNavActive((prev) => !prev)}>
-              <BarsIcon />
-            </NavButtonIcon>
-          </Wrapper>
-        </Center>
+            <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
+          </StyledNav>
+          <NavButtonIcon
+            mobilenavactive={mobileNavActive ? 1 : 0}
+            onClick={() => setMobileNavActive((prev) => !prev)}
+          >
+            <BarsIcon />
+          </NavButtonIcon>
+        </Wrapper>
+        // </Center>
       )}
     </StyleHeader>
   );
