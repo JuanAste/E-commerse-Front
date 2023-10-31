@@ -1,3 +1,4 @@
+import About from "@/components/About";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Spinner from "@/components/Spinner";
@@ -15,7 +16,7 @@ export default function CategoryPage({ categories }) {
   }, [categories]);
 
   return (
-    <>
+    <About loading={loading}>
       {loading ? (
         <Spinner size={80} />
       ) : (
@@ -27,7 +28,7 @@ export default function CategoryPage({ categories }) {
           </Center>
         </div>
       )}
-    </>
+    </About>
   );
 }
 

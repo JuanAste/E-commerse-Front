@@ -1,3 +1,4 @@
+import About from "@/components/About";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Paginate from "@/components/productsPage/Paginate";
@@ -17,7 +18,7 @@ export default function ProductsPage({ products }) {
   }, [products]);
 
   return (
-    <>
+    <About loading={loading}>
       {loading ? (
         <Spinner size={80} />
       ) : (
@@ -31,7 +32,7 @@ export default function ProductsPage({ products }) {
           </Center>
         </div>
       )}
-    </>
+    </About>
   );
 }
 

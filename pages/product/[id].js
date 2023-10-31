@@ -1,3 +1,4 @@
+import About from "@/components/About";
 import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
@@ -46,7 +47,7 @@ export default function ProductPage({ product, order, review, reviews }) {
   }, [product]);
 
   return (
-    <>
+    <About loading={loading}>
       {loading ? (
         <Spinner size={80} />
       ) : (
@@ -94,7 +95,7 @@ export default function ProductPage({ product, order, review, reviews }) {
           </Center>
         </>
       )}
-    </>
+    </About>
   );
 }
 

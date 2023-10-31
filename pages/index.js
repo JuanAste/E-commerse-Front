@@ -15,7 +15,7 @@ export default function Home({ featureProduct, newProducts }) {
   }, [featureProduct, newProducts]);
 
   return (
-    <About>
+    <About loading={loading} >
       <Header />
       {loading ? (
         <Spinner size={80} />
